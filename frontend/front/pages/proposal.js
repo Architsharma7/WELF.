@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Proposalamount from "../components/proposalamount";
 import Proposaldesc from "../components/proposaldesc";
 import Proposalimage from "../components/proposalimage";
+import Proposalpreview from "../components/proposalpreview";
 import ProposalTitle from "../components/ProposalTitle";
 import styles from "../styles/progressbar.module.css";
 
@@ -18,17 +19,21 @@ const Proposal = () => {
       return <Proposalamount proposalForm={proposalForm} setProposalForm={setProposalForm}/>;
     }
     if (page == 3) {
-      return <Proposalimage/>;
+      return <Proposalimage proposalForm={proposalForm} setProposalForm={setProposalForm}/>;
+    }
+    if (page == 4) {
+      return <Proposalpreview proposalForm={proposalForm}/>;
     }
   };
 
   const [page, setPage] = useState(0);
-  const formTitles = ["title", "desc", "amount","image"];
+  const formTitles = ["title", "desc", "amount","image", "preview"];
   const [proposalForm, setProposalForm] = useState({
     title: "",
     desc: "",
     donation: "",
     donationbreakage: "",
+    images: "",
 })
 
   return (
@@ -38,7 +43,7 @@ const Proposal = () => {
           <div className={styles.progressbar}>
             <div
               style={{
-                width: page === 0 ? "25%" : page == 1 ? "50%" : page == 2 ? "75%" : "100%",
+                width: page === 0 ? "20%" : page == 1 ? "40%" : page == 2 ? "60%" : page == 3 ? "80%" : "100%",
               }}
             ></div>
           </div>
@@ -68,7 +73,7 @@ const Proposal = () => {
                 }
               }}
             >
-              {page == formTitles.length -1 ? "submit" : "next"}
+              {page == formTitles.length - 1 ? "submit" : "next"}
             </button>
           </div>
         </div>
