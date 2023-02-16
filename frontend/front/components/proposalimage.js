@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Proposalimage = () => {
+const Proposalimage = ({proposalImage, setProposalImage}) => {
   return (
     <div className="flex flex-col">
       <p className="text-black lg:text-6xl text-4xl mt-7 4xl:text-8xl">
