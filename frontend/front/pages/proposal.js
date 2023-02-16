@@ -19,7 +19,7 @@ const Proposal = () => {
       return <Proposalamount proposalForm={proposalForm} setProposalForm={setProposalForm}/>;
     }
     if (page == 3) {
-      return <Proposalimage/>;
+      return <Proposalimage proposalForm={proposalForm} setProposalForm={setProposalForm}/>;
     }
     if (page == 4) {
       return <Proposalpreview proposalForm={proposalForm}/>;
@@ -33,6 +33,7 @@ const Proposal = () => {
     desc: "",
     donation: "",
     donationbreakage: "",
+    images: "",
 })
 
   return (
@@ -72,7 +73,7 @@ const Proposal = () => {
                 }
               }}
             >
-              {page == formTitles.length -1 ? "submit" : "next"}
+              {page == formTitles.length - 1 ? "submit" : "next"}
             </button>
           </div>
         </div>
