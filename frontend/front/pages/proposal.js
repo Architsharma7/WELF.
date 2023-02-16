@@ -6,14 +6,6 @@ import ProposalTitle from "../components/ProposalTitle";
 import styles from "../styles/progressbar.module.css";
 
 const Proposal = () => {
-  const [page, setPage] = useState(0);
-  const formTitles = ["title", "desc", "amount","image"];
-  const [proposalForm, setProposalForm] = useState({
-    title: "",
-    desc: "",
-    donation: "",
-    donationbreakage: "",
-})
 
   const PageDisplay = () => {
     if (page == 0) {
@@ -30,6 +22,15 @@ const Proposal = () => {
     }
   };
 
+  const [page, setPage] = useState(0);
+  const formTitles = ["title", "desc", "amount","image"];
+  const [proposalForm, setProposalForm] = useState({
+    title: "",
+    desc: "",
+    donation: "",
+    donationbreakage: "",
+})
+
   return (
     <div className="w-screen">
       <div className="flex flex-col justify-center mx-auto items-center">
@@ -44,9 +45,7 @@ const Proposal = () => {
         </div>
         <div className="w-4/5 lg:w-3/5">
           <div className="flex flex-col justify-center mx-auto mt-10">
-            <>
-              <PageDisplay />
-            </>
+            {PageDisplay()}
           </div>
           <div className="flex mt-10 justify-between mb-10">
             <button
