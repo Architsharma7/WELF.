@@ -1,22 +1,32 @@
 import React, { useState } from "react";
 import Proposalamount from "../components/proposalamount";
 import Proposaldesc from "../components/proposaldesc";
+import Proposalimage from "../components/proposalimage";
 import ProposalTitle from "../components/ProposalTitle";
 import styles from "../styles/progressbar.module.css";
 
 const Proposal = () => {
   const [page, setPage] = useState(0);
-  const formTitles = ["title", "desc", "amount"];
+  const formTitles = ["title", "desc", "amount","image"];
+  const [proposalForm, setProposalForm] = useState({
+    title: "",
+    desc: "",
+    donation: "",
+    donationbreakage: "",
+})
 
   const PageDisplay = () => {
     if (page == 0) {
-      return <ProposalTitle/>;
+      return <ProposalTitle proposalForm={proposalForm} setProposalForm={setProposalForm}/>;
     }
     if (page == 1) {
-      return <Proposaldesc />;
+      return <Proposaldesc proposalForm={proposalForm} setProposalForm={setProposalForm}/>;
     }
     if (page == 2) {
-      return <Proposalamount />;
+      return <Proposalamount proposalForm={proposalForm} setProposalForm={setProposalForm}/>;
+    }
+    if (page == 3) {
+      return <Proposalimage/>;
     }
   };
 
@@ -27,7 +37,7 @@ const Proposal = () => {
           <div className={styles.progressbar}>
             <div
               style={{
-                width: page === 0 ? "33.33%" : page == 1 ? "66.66%" : "100%",
+                width: page === 0 ? "25%" : page == 1 ? "50%" : page == 2 ? "75%" : "100%",
               }}
             ></div>
           </div>
@@ -47,7 +57,7 @@ const Proposal = () => {
                 setPage((currPage) => currPage - 1);
               }}
             >
-              prev
+              previous
             </button>
             <button
               className="bg-violet-400 px-7 md:py-2 py-1 rounded-lg text-center text-white hover:scale-110 transition duration-200"
@@ -59,7 +69,7 @@ const Proposal = () => {
                 }
               }}
             >
-              {page == 2 ? "submit" : "next"}
+              {page == formTitles.length -1 ? "submit" : "next"}
             </button>
           </div>
         </div>
