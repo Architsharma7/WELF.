@@ -33,6 +33,8 @@ contract WelfFunds is Ownable {
     /// @dev events to keep track of ether receive and Withdrawl
     event received(address user, uint256 amount);
     event withdrawal(address user, uint256 amount);
+    event receivedToken(address token, address user, uint256 amount);
+    event withdrawalToken(address token, address user, uint256 amount);
 
     mapping(address => bool) contributors;
     mapping(address => amount) stakers;
@@ -103,6 +105,7 @@ contract WelfFunds is Ownable {
         uint256 amount
     ) public {
         IERC20(token).transferFrom(from, address(this), amount);
+        emit receivedToken(token, msg.sender, amount);
     }
 
     function withdrawTokens(
@@ -111,6 +114,7 @@ contract WelfFunds is Ownable {
         uint256 amount
     ) public {
         IERC20(token).transfer(to, amount);
+        emit withdrawalToken(token, to, amount);
     }
 
     /*

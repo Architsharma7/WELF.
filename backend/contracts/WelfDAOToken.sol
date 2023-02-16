@@ -12,6 +12,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 /// The tokens also need to be burnt on some method , maybe while donating
 
 /// DAO will take some amount out of the Users donated amount to handle these incentives
+/// 1 Token
+//  Cash / monetary 0.1$
+//  Donate - 0.5$
 
 contract WelfDAOToken is ERC20, Ownable {
     address public manager;
