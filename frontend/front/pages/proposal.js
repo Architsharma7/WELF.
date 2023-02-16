@@ -42,15 +42,15 @@ const Proposal = () => {
             ></div>
           </div>
         </div>
-        <div className="w-3/5">
+        <div className="w-4/5 lg:w-3/5">
           <div className="flex flex-col justify-center mx-auto mt-10">
             <>
               <PageDisplay />
             </>
           </div>
-          <div className="flex mt-10 justify-between">
+          <div className="flex mt-10 justify-between mb-10">
             <button
-              className={`bg-violet-400 px-7 md:py-2 py-1 rounded-lg text-center text-white hover:scale-110 transition duration-200 ${
+              className={`bg-violet-400 px-7 4xl:px-12 md:py-2 py-1 4xl:py-3 rounded-lg text-center text-white hover:scale-110 transition duration-200 4xl:text-4xl ${
                 page == 0 ? "invisible" : "visible"
               }`}
               onClick={() => {
@@ -60,7 +60,7 @@ const Proposal = () => {
               previous
             </button>
             <button
-              className="bg-violet-400 px-7 md:py-2 py-1 rounded-lg text-center text-white hover:scale-110 transition duration-200"
+              className="bg-violet-400 px-7 4xl:px-12 md:py-2 py-1 4xl:py-3 rounded-lg text-center text-white hover:scale-110 transition duration-200 4xl:text-4xl"
               onClick={() => {
                 if (page === formTitles.length - 1) {
                   alert("form submitted");

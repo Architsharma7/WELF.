@@ -7,13 +7,13 @@
 
 @media screen and (max-width: 480px) {
     .progressbar {
-        width: 200px;
+        width: 300px;
         height: 7px;
     }
 }
 @media screen and (min-width: 768px) {
     .progressbar {
-        width: 300px;
+        width: 600px;
     }
 }
 @media screen and (min-width: 1200px) {
@@ -24,6 +24,11 @@
 @media screen and (min-width: 1201px) {
     .progressbar {
         width: 900px;
+    }
+}
+@media screen and (min-width: 2000px) {
+    .progressbar {
+        width: 1550px;
     }
 }
 
