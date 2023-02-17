@@ -6,6 +6,7 @@
 4. PropFund -- Funds contract to recieve the users funds and then withdraw them out according to the need
 5. PropFund Factory -- Deploy new Funds contract
 6. WelfDAOToken -- rewards and incentives ✅
+7. DonorRegistery - records of all the donor ✅
 
 Model
 

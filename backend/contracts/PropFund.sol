@@ -29,7 +29,7 @@ interface IERC20 {
 // The funds can be added via the Router only ,to add the rewards and records
 // Also the withdrawl is only possible via the Router / Manager
 
-contract WelfFunds is Ownable {
+contract PropFund is Ownable {
     /// @dev events to keep track of ether receive and Withdrawl
     event received(address user, uint256 amount);
     event withdrawal(address user, uint256 amount);
