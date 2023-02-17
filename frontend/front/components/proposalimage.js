@@ -11,7 +11,7 @@ const Proposalimage = ({proposalForm, setProposalForm}) => {
       </p>
       <div className='flex justify-center mx-auto border border-dashed border-black h-[100px] lg:w-[600px] w-[300px] md:w-[500px] 4xl:h-[300px] 4xl:w-[1200px] mt-5 4xl:mt-16'>
         <div className='flex justify-center my-auto mx-auto'>
-        <input type="file" accept="image/*" className='4xl:text-3xl text-sm lg:text-base' onChange={(e) => setProposalForm({...proposalForm, images:e.target.files[0]})}/>
+        <input type="file" accept="image/*" className='4xl:text-3xl text-sm lg:text-base' onChange={(e) => setProposalForm({...proposalForm, images:URL.createObjectURL(e.target.files[0])})}/>
         </div> 
       </div>
       <p className='text-black lg:text-lg text-base mt-6 4xl:mt-12 4xl:text-3xl flex mx-auto'>Image sizes of at least 1200 x 675 pixels will look good on all screens</p>

@@ -5,6 +5,7 @@ import Proposalimage from "../components/proposalimage";
 import Proposalpreview from "../components/proposalpreview";
 import ProposalTitle from "../components/ProposalTitle";
 import styles from "../styles/progressbar.module.css";
+import { storeProposal } from "../functions/ipfsstorage";
 
 const Proposal = () => {
 
@@ -35,6 +36,15 @@ const Proposal = () => {
     donationbreakage: "",
     images: "",
 })
+
+  const [ipfsLink, setIpfsLink] = useState("")
+
+  async function getProposal(){
+    const CID = await storeProposal(proposalForm);
+    const IPFSURL = `https://w3s.link/ipfs/${CID}`;
+    console.log(IPFSURL, "IPFSURL");
+    setIpfsLink(IPFSURL);
+  }
 
   return (
     <div className="w-screen">
@@ -68,6 +78,7 @@ const Proposal = () => {
               onClick={() => {
                 if (page === formTitles.length - 1) {
                   alert("form submitted");
+                  getProposal();
                 } else {
                   setPage((currPage) => currPage + 1);
                 }
@@ -83,3 +94,4 @@ const Proposal = () => {
 };
 
 export default Proposal;
+
