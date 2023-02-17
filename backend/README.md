@@ -6,6 +6,7 @@
 4. PropFund -- Funds contract to recieve the users funds and then withdraw them out according to the need
 5. PropFund Factory -- Deploy new Funds contract
 6. WelfDAOToken -- rewards and incentives ✅
+7. DonorRegistery - records of all the donor ✅
 
 Model
 
@@ -41,3 +42,43 @@ Model
 // Dashboard (for normal Users)
 --> Name optional , Address
 --> Show all then donated campaigns
+
+## USER FLOWS
+
+### DAO Member Onboarding
+
+--> Fill up details
+--> Data Upload to IPFS
+--> NFT Minting from the NFT Contract by paying up
+--> Then Record being added to the DAO with the user Data CID
+
+### Normal User Onboarding
+
+--> They create a basic Account with Name and some other Info
+--> Records added to IPFS and then to Contract via a Tx
+--> Select the campaign , define the amount and payup by interacting with FundManager
+--> Automatic donation record added in the backend
+
+### Campaign Creation
+
+--> Fill in the Data regarding the Campaign
+--> Upload the images and videos to IPFS
+--> Then upload the remaining data to IPFS
+--> Add the Record into the DAO Contract , creation of a new Proposal , and addition of same into the Creator Profile
+--> Later the Campaign is voted for under a period of 12 hrs
+--> In the End the Campaign is Verified , later where the FUND Contrtacts is assigned for the same , from the FUND manager
+--> This Campaign is open for funding , managed via the FUND Manager
+--> On completion , the , funds could be withdrawn
+
+### Fund Donation
+
+--> Once the Campaign is verified , It will show up for the users to donate
+--> The details will be then fetched from FUND Manager and the DAO Campaign Contract
+--> Users can select the amount and donate via FUND Manager Intrn ,
+--> Tokens credited to the user for donating in some proportions
+--> The time completes , and the funding stops
+
+### Withdraw method
+
+-->
+-->
