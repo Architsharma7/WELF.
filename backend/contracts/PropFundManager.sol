@@ -8,6 +8,7 @@ import "./PropFund.sol";
 /// Deploy and Create a Funds Contract
 /// Single Point to even send some funds to the contracts and from here itself we manage and add the records
 /// Also the single point for withdrawl of any sort from the contracts
+/// Set withdraw rules too
 
 contract PropFundManager is Ownable {
     //// Store all the prop Stats , Donors , and other info around the funds
@@ -21,6 +22,9 @@ contract PropFundManager is Ownable {
         address Creator;
         uint256 totalFunds;
         uint256 totalDonors;
+        uint256 campaignDuration;
+        uint256 campaignStartTime;
+        bool status; // ACTIVE ,  COMPLETED , CANCELLED
     }
 
     uint256 public totalCampaigns;

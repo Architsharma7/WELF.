@@ -121,7 +121,7 @@ contract WelfDAONFT is ERC721, ERC721Enumerable, Ownable {
     /// function to remove someone from the DAO  , called only by the owner
     /// will burn the token ID from the users account
     /// No refund allowed here
-    function revoke(uint256 tokenId) external onlyOwner {
+    function revoke(uint256 tokenId) external onlyManager {
         _burn(tokenId);
     }
 
