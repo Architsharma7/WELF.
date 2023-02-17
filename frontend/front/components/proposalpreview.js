@@ -1,7 +1,6 @@
 import React from "react";
 
 const Proposalpreview = ({proposalForm}) => {
-  const imageinfo = proposalForm.images;
   return (
     <div className="flex flex-col">
       <p className="text-black lg:text-6xl text-4xl mt-7 4xl:text-8xl">
@@ -34,7 +33,7 @@ const Proposalpreview = ({proposalForm}) => {
       <p className="mt-10 text-3xl 4xl:text-5xl 4xl:mt-16">
         Image Chosen
       </p>
-      <img src={URL.createObjectURL(imageinfo)} alt="hello" className="mt-3 4xl:mt-6 4xl:mb-10 w-[200px] h-[100px]"/>
+      <img src={proposalForm.images} alt="hello" className="mt-3 4xl:mt-6 4xl:mb-10 w-[200px] h-[100px]"/>
     </div>
   );
 };
