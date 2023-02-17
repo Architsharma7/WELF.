@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { LinkBox, LinkOverlay } from "@chakra-ui/react";
+import Link from "next/link";
 
 const Explore = () => {
 
@@ -18,6 +19,7 @@ const Explore = () => {
       <div className="w-4/5 flex justify-center mx-auto flex-col items-center">
         <p className="text-3xl mt-10">Proposals</p>
         <div className="grid lg:grid-cols-3 grid-cols-1 mt-20 w-full items-center text-center gap-x-6 gap-y-10">
+            <Link href="/">
           <div className="flex flex-col items-center bg-slate-100 shadow-xl border-black border rounded-xl px-4 py-3 h-[450px]">
             <div className="h-[270px]">
               {/* {data ? <img src={URL.createObjectURL(data.images)} alt=""/> : <p>Image Not Found</p>} */}
@@ -37,6 +39,8 @@ const Explore = () => {
               {data ? <p className="text-ellipsis overflow-hidden">{data.donation}</p> : <p>undefined</p>}
             </div>
           </div>
+          </Link>
+          <Link href="/">
           <div className="flex flex-col items-center bg-slate-100 shadow-xl border-black border rounded-xl px-4 py-3 h-[450px]">
             <div className="h-[270px]">
               {/* {data ? <img src={URL.createObjectURL(data.images)} alt=""/> : <p>Image Not Found</p>} */}
@@ -56,6 +60,8 @@ const Explore = () => {
               {data ? <p className="text-ellipsis overflow-hidden">{data.donation}</p> : <p>undefined</p>}
             </div>
           </div>
+          </Link>
+          <Link href="/">
           <div className="flex flex-col items-center bg-slate-100 shadow-xl border-black border rounded-xl px-4 py-3 h-[450px]">
             <div className="h-[270px]">
               {/* {data ? <img src={URL.createObjectURL(data.images)} alt=""/> : <p>Image Not Found</p>} */}
@@ -75,6 +81,8 @@ const Explore = () => {
               {data ? <p className="text-ellipsis overflow-hidden">{data.donation}</p> : <p>undefined</p>}
             </div>
           </div>
+          </Link>
+          <Link href="/">
           <div className="flex flex-col items-center bg-slate-100 shadow-xl border-black border rounded-xl px-4 py-3 h-[450px]">
             <div className="h-[270px]">
               {/* {data ? <img src={URL.createObjectURL(data.images)} alt=""/> : <p>Image Not Found</p>} */}
@@ -94,6 +102,7 @@ const Explore = () => {
               {data ? <p className="text-ellipsis overflow-hidden">{data.donation}</p> : <p>undefined</p>}
             </div>
           </div>
+          </Link>
         </div>
       </div>
     </div>
