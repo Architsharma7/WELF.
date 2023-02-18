@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 interface WelfFunds {
     // to stake the amount to join the DAO
-    function intiateStake(address _from) external payable;
+    function intiateStake(address _from, uint256 amount) external payable;
 
     // function to return the joining fees
     function returnStake(address _userAddress) external returns (bool success);
@@ -80,8 +80,8 @@ contract WelfDAONFT is ERC721, Ownable {
         require(balanceOf(to) == 0, "You are already a DAO Member");
 
         // Send the fee to the Funds Contract
-        // (bool success, ) = welfFundAddress.call{value: msg.value}("");
-        _funds.intiateStake(msg.sender){value: msg.value};
+        (bool success, ) = welfFundAddress.call{value: msg.value}("");
+        _funds.intiateStake(msg.sender, msg.value);
 
         // then mint the NFT to the address respectively
         uint256 tokenId = _tokenIdCounter.current();
