@@ -5,7 +5,7 @@ export const NFT_CONTRACT_ADDRESS =
 export const REGISTERY_CONTRACT_ADDRESS =
   "0xfDA0991fB004C2AA5B522317755B1D2F8384054B";
 export const DAO_CONTRACT_ADDRESS =
-  "0x12A5Ed14a152CA56690b6d345e998C0d90d53B6B";
+  "0x21ED0290bC08DE6BB179a46A83FFE6a5B7e9FbA3";
 export const DAOFUND_CONTRACT_ADDRESS =
   "0x056537e22cAC19Eb010bD69466a973112B88B5ba";
 export const FUNDMANAGER_CONTRACT_ADDRESS =
@@ -1290,7 +1290,7 @@ export const DAO_CONTRACT_ABI = [
     name: "_nftContract",
     outputs: [
       {
-        internalType: "contract NFTContrtact",
+        internalType: "contract NFTContract",
         name: "",
         type: "address",
       },

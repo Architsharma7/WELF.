@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 /// Manage the Members Access and thier Profile Status
 /// Manage All the proposals they create and vote on those
 
-interface NFTContrtact {
+interface NFTContract {
     function balanceOf(address owner) external view returns (uint256);
 
     function ownerOf(uint256 tokenId) external view returns (address);
@@ -80,14 +80,13 @@ contract WelfDAO is Ownable {
     address public manager;
 
     address public nftContractAddress;
-    NFTContrtact public _nftContract = NFTContrtact(nftContractAddress);
+    NFTContract public _nftContract;
 
     address public fundManagerAddress;
-    campaignManager public _managerContract =
-        campaignManager(fundManagerAddress);
+    campaignManager public _managerContract;
 
     address public tokenContractAddress;
-    TokenContract public _tokenContract = TokenContract(tokenContractAddress);
+    TokenContract public _tokenContract;
 
     /*
      *  ########  MEMBER VARAIBLES   #########
@@ -132,6 +131,9 @@ contract WelfDAO is Ownable {
         nftContractAddress = _nftAddress;
         fundManagerAddress = _fundManager;
         tokenContractAddress = _tokenAddress;
+        _nftContract = NFTContract(nftContractAddress);
+        _managerContract = campaignManager(fundManagerAddress);
+        _tokenContract = TokenContract(tokenContractAddress);
     }
 
     function changeNFTContractAddress(address _newAddress) public onlyOwner {
@@ -159,7 +161,11 @@ contract WelfDAO is Ownable {
 
     /// @dev Add Members to the DAO after minting an NFT and add their Record
     /// @dev The member Needs to call the function after minting the NFT
-    function addDAOMember(uint256 tokenId, string memory _profileCID, uint256[] memory _proposals) public {
+    function addDAOMember(
+        uint256 tokenId,
+        string memory _profileCID,
+        uint256[] memory _proposals
+    ) public {
         require(
             _nftContract.ownerOf(tokenId) == msg.sender,
             "NOT THE NFT OWNER"
@@ -223,7 +229,7 @@ contract WelfDAO is Ownable {
     function getMemberStatus(address user)
         public
         view
-        returns (memberStatus  _status)
+        returns (memberStatus _status)
     {
         _status = daoMembers[user].status;
     }
@@ -272,7 +278,10 @@ contract WelfDAO is Ownable {
             block.timestamp < _campaign.startTime + votingDuration,
             "Voting has already ended"
         );
-        require(voters[_proposalID][msg.sender] == false, "You have already voted");
+        require(
+            voters[_proposalID][msg.sender] == false,
+            "You have already voted"
+        );
         if (_vote == Vote.YES) _campaign.yayVotes += 1;
         else _campaign.nayVotes += 1;
         voters[_proposalID][msg.sender] == true;
