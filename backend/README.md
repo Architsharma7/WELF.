@@ -86,3 +86,9 @@ Model
 
 -->
 -->
+
+## PENDING TASKS
+
+--> Proper Withdrawl
+--> Campaign Closing
+--> Tokens redemption

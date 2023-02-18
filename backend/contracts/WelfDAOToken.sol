@@ -40,7 +40,7 @@ contract WelfDAOToken is ERC20, Ownable {
         _;
     }
 
-    function approve(address user, bool status) onlyManager {
+    function approve(address user, bool status) public onlyManager {
         approved[user] = status;
     }
 

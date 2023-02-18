@@ -18,6 +18,10 @@ interface DonationRegistery {
     ) external;
 }
 
+interface TokenContract {
+    function mint(address _to, uint256 _amount) external;
+}
+
 contract PropFundManager is Ownable {
     //// Store all the prop Stats , Donors , and other info around the funds
 
@@ -43,11 +47,11 @@ contract PropFundManager is Ownable {
         uint256 campaignDuration;
         uint256 campaignStartTime; // When the campaign goes Live
         campaignStatus _status;
-        string[] cidProofs;
     }
 
     uint256 public totalCampaigns;
     mapping(uint256 => Campaign) public fundCampaigns;
+    mapping(uint256 => string[]) public withdrawProofs;
 
     /*
      *  ########  MANAGER CONTROL   #########
@@ -61,9 +65,17 @@ contract PropFundManager is Ownable {
     DonationRegistery public _donationRegistery =
         DonationRegistery(registeryAddress);
 
-    constructor(address _manager, address _regsiteryAddress) {
+    address public tokenContractAddress;
+    TokenContract public _tokenContract = TokenContract(tokenContractAddress);
+
+    constructor(
+        address _manager,
+        address _regsiteryAddress,
+        address _tokenAddress
+    ) {
         manager = _manager;
         registeryAddress = _regsiteryAddress;
+        tokenContractAddress = _tokenAddress;
         approved[msg.sender] = true;
         approved[manager] = true;
         transferOwnership(manager);
@@ -83,7 +95,7 @@ contract PropFundManager is Ownable {
         _;
     }
 
-    function approve(address user, bool status) onlyManager {
+    function approve(address user, bool status) public onlyManager {
         approved[user] = status;
     }
 
@@ -106,7 +118,7 @@ contract PropFundManager is Ownable {
     ) public onlyApproved returns (uint256 id) {
         /// deploy the fund Contract
 
-        PropFund storage _fundContract = new PropFund(manager);
+        PropFund  _fundContract = new PropFund(manager);
 
         /// add the details to the data here
         require(campaignID == totalCampaigns, "INVALID CAMPAIGN ID");
@@ -122,8 +134,7 @@ contract PropFundManager is Ownable {
             0,
             duration,
             block.timestamp,
-            campaignStatus.ACTIVE,
-            []
+            campaignStatus.ACTIVE
         );
 
         totalCampaigns += 1;
@@ -203,9 +214,9 @@ contract PropFundManager is Ownable {
 
         require(msg.value >= amount, "INCORRECT AMOUNT SENT");
         address fundContractAddress = _campaign.fundContract;
-        // (bool success, ) = fundContractAddress.call{value: amount}("");
+        (bool success, ) = fundContractAddress.call{value: amount}("");
 
-        PropFund(fundContractAddress).depositETH(user){value: amount};
+        // PropFund(payable(fundContractAddress)).depositETH(user){value: amount};
         require(success, "DEPOST NOT COMPLETED");
 
         _campaign.totalFunds += amount;
@@ -213,6 +224,10 @@ contract PropFundManager is Ownable {
 
         /// donor record can be directly fetched from incoming and outgoing tx on the chain
         _donationRegistery.addDonorRecord(user, campaignID, amount);
+
+        ///mint the depost Tokens
+        // for 100 ETH donation , we provide 10 tokens as incentive
+        _tokenContract.mint(msg.sender,( amount * 1 / 10 ));
     }
 
     /*
@@ -238,22 +253,23 @@ contract PropFundManager is Ownable {
         );
 
         require(
-            amount <= (_campaign.totalFunds * 0.4),
+            amount <= (_campaign.totalFunds * 4 / 10),
             "Amount Can only be withdrawn until 40% "
         );
 
         /// Initiate the withdrawl
         address fundContractAddress = _campaign.fundContract;
-        PropFund(fundContractAddress).withdrawEthTo(withdrawAddress, amount);
+        PropFund(payable(fundContractAddress)).withdrawEthTo(payable(withdrawAddress), amount);
     }
 
     function addProof(uint256 campaignID, string memory proofCID) public {
         Campaign memory _campaign = fundCampaigns[campaignID];
 
         require(_campaign.Creator == msg.sender, "NOT AUTHORISED TO WITHDRAW");
+        
 
-        _campaign.cidProofs.push(proofCID);
-
-        /// Proof addition Complete
+        /// Proof addition Complete 
+        withdrawProofs[campaignID].push(proofCID);
+        /// Now check needs to be implemented from The DOA Manager and the member itself
     }
 }

@@ -17,7 +17,7 @@ interface WelfFunds {
 // NFT Contract to allot the Memberships
 // Manager can control the User Memberships
 // User can also burn the NFT and withdraw the staked Amount
-contract WelfDAONFT is ERC721, ERC721Enumerable, Ownable {
+contract WelfDAONFT is ERC721, Ownable {
     using Counters for Counters.Counter;
 
     uint256 public price = 0.05 ether;
@@ -96,7 +96,7 @@ contract WelfDAONFT is ERC721, ERC721Enumerable, Ownable {
         address from,
         address to,
         uint256 tokenId
-    ) internal override(ERC721, ERC721Enumerable) {
+    ) internal {
         require(
             to == address(0) || from == address(0),
             "The NFT is non transferrable"
@@ -131,7 +131,7 @@ contract WelfDAONFT is ERC721, ERC721Enumerable, Ownable {
         address from,
         address to,
         uint256 tokenId
-    ) internal override {
+    ) internal {
         if (from == address(0)) {
             emit Attest(to, tokenId);
         } else if (to == address(0)) {
@@ -142,7 +142,7 @@ contract WelfDAONFT is ERC721, ERC721Enumerable, Ownable {
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, ERC721Enumerable)
+        override
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
