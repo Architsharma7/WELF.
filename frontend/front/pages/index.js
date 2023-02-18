@@ -1,8 +1,11 @@
-import Head from 'next/head'
+import Navbar from '../components/navbar'
+import Mainpage from '../components/mainpage'
 
 export default function Home() {
   return (
-    <div>
+    <div className='bg-indigo-400 w-screen flex flex-col'>
+      <Navbar/>
+      <Mainpage/>
     </div>
   )
 }
