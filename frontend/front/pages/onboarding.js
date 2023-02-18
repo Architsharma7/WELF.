@@ -1,14 +1,44 @@
 import React, { useState, useMemo } from "react";
 import countryList from "react-select-country-list";
 import Select from "react-select";
+import { StoreContent } from "../functions/ipfsstorage";
+import { storeProposal } from "../functions/ipfsstorage";
 
 const Onboarding = () => {
   const [memberData, setMemberData] = useState({
     name: "",
     bio: "",
+    pfp: "",
+    locationofmember: ""
   });
+  const [files, setFiles] = useState([])
   const [location, setLocation] = useState("");
   const options = useMemo(() => countryList().getData(), []);
+  const [ipfsUrl, setIpfsUrl] = useState("");
+
+  // const setstate = async (pfpURL) => {
+  //   setMemberData({...memberData, pfp: pfpURL})
+  // }
+
+  const upload = async () => {
+    try {
+      const pfpcid = await StoreContent(files);
+      const pfpURL = `https://ipfs.io/ipfs/${pfpcid}`;
+      // setstate();
+      setIpfsUrl(pfpURL)
+      const memberCID = await storeProposal(memberData);
+      const memberIPFSURL = `https://w3s.link/ipfs/${memberCID}`;
+      setIpfsUrl(memberIPFSURL);
+      console.log("File uploaded to IPFS");
+      console.log(memberIPFSURL, pfpURL);
+      return{
+        memberIPFSURL, pfpURL
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   return (
     <div className="w-screen">
@@ -49,6 +79,7 @@ const Onboarding = () => {
             className="mt-4 4xl:text-3xl 4xl:mt-6"
             name="Select Country"
             onChange={(location) => setLocation(location)}
+            // onChange ={(e) => setMemberData({...memberData, locationofmember: e.})}
           ></Select>
           <p className="text-3xl 4xl:text-5xl justify-start mt-10 4xl:mt-20">Profile Picture</p>
           <div className="flex justify-center mx-auto border border-dashed border-black h-[100px] xl:w-[500px] lg:w-[400px] w-[300px] md:w-[400px] 4xl:h-[300px] 4xl:w-[1000px] mt-5 4xl:mt-16">
@@ -57,13 +88,14 @@ const Onboarding = () => {
                 type="file"
                 accept="image/*"
                 className="4xl:text-3xl text-sm lg:text-base"
+                onChange={(e) => setFiles(e.target.files[0])}
               />
             </div>
           </div>
         </div>
         <button
           className="flex justify-center mx-auto px-16 py-3 rounded-lg mt-16 bg-white border border-violet-500 hover:scale-110 hover:bg-violet-500 hover:text-white transition duration-200 text-xl 4xl:text-3xl 4xl:mt-24 mb-10"
-          onClick={() => console.log(location.label, memberData)}
+          onClick={console.log(location)}
         >
           Stake &nbsp;0.001ETH
         </button>

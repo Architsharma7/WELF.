@@ -36,4 +36,10 @@ export const storeProposal = async (obj) => {
 //   }
 // }
 
-
+export const StoreContent = async (files) => {
+  console.log("Uploading files to IPFS with web3.storage....");
+  const client = makeStorageClient();
+  const cid = await client.put([files]);
+  console.log("Stored files with cid:", cid);
+  return cid;
+};
