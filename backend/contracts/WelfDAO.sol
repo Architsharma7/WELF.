@@ -14,6 +14,21 @@ interface NFTContrtact {
     function revoke(uint256 tokenId) external;
 }
 
+interface campaignManager {
+    function createFundContract(
+        uint256 campaignID,
+        uint256 proposalID,
+        string memory _infoCID,
+        uint256 amount,
+        uint256 duration,
+        address creatorAddress
+    ) external returns (uint256 id);
+}
+
+interface TokenContract {
+    function mint(address _to, uint256 _amount) external;
+}
+
 contract WelfDAO is Ownable {
     /// Proposal details
     //-> Create new proposals
@@ -29,23 +44,31 @@ contract WelfDAO is Ownable {
         NOTACTIVE,
         UNDERVOTE,
         VOTED,
-        COMPLETED
+        COMPLETED,
+        CANCELLED
     }
 
     struct campaignProposal {
         address creator;
         address fundContract;
         string _infoCID;
+        uint256 amountReq;
         campaignStatus status;
         uint256 startTime;
+        uint256 duration;
         uint256 yayVotes;
         uint256 nayVotes;
         bool verified;
     }
 
+    // these are just all the proposals , not the active ones
     uint256 public totalProposals;
+    uint256 public totalCampaigns;
 
     mapping(uint256 => campaignProposal) public proposals;
+    mapping(uint256 => campaignProposal) public campaigns;
+
+    mapping(uint256 => mapping(address => bool)) public voters;
     /*
      *#############
      */
@@ -58,6 +81,14 @@ contract WelfDAO is Ownable {
 
     address public nftContractAddress;
     NFTContrtact public _nftContract = NFTContrtact(nftContractAddress);
+
+    address public fundManagerAddress;
+    campaignManager public _managerContract =
+        campaignManager(fundManagerAddress);
+
+    address public tokenContractAddress;
+    TokenContract public _tokenContract = TokenContract(tokenContractAddress);
+
     /*
      *  ########  MEMBER VARAIBLES   #########
      */
@@ -76,7 +107,7 @@ contract WelfDAO is Ownable {
         NO // NO = 1
     }
 
-    uint256 public votingDuration = 2 days;
+    uint256 public votingDuration = 12 hours;
 
     struct DAOMember {
         bool daoMemberStatus; // mark the id as active and inactive
@@ -91,9 +122,16 @@ contract WelfDAO is Ownable {
 
     mapping(address => DAOMember) public daoMembers;
 
-    constructor(address _nftAddress, address _manager) {
+    constructor(
+        address _nftAddress,
+        address _tokenAddress,
+        address _manager,
+        address _fundManager
+    ) {
         manager = _manager;
         nftContractAddress = _nftAddress;
+        fundManagerAddress = _fundManager;
+        tokenContractAddress = _tokenAddress;
     }
 
     function changeNFTContractAddress(address _newAddress) public onlyOwner {
@@ -194,11 +232,11 @@ contract WelfDAO is Ownable {
      *  ########  CAMPAIGN SETTER VARAIBLES   #########
      */
 
-    function createProposal(string memory _ipfsCID)
-        public
-        onlyActiveDAOMembers
-        returns (uint256 proposalID)
-    {
+    function createProposal(
+        string memory _ipfsCID,
+        uint256 amount,
+        uint256 duration
+    ) public onlyActiveDAOMembers returns (uint256 proposalID) {
         /// add the info into proposal mapping
 
         proposalID = totalProposals;
@@ -207,8 +245,10 @@ contract WelfDAO is Ownable {
             msg.sender,
             address(0),
             _ipfsCID,
+            amount,
             campaignStatus.UNDERVOTE,
             block.timestamp,
+            duration,
             0,
             0,
             false
@@ -218,24 +258,68 @@ contract WelfDAO is Ownable {
         daoMembers[msg.sender].proposalIDs.push(proposalID);
 
         /// Voting starts as soon as the proposals are added
+        totalProposals += 1;
     }
 
-    /// Intiate Voting
-    // voting function for requested member
-    // function vote(Vote _vote, uint256 _proposalID) public onlyActiveDAOMembers {
-    //     require(
-    //         block.timestamp > member.votingStartTime,
-    //         "You can't approve this person before the voting starts."
-    //     );
-    //     require(
-    //         block.timestamp < member.votingStartTime + votingDuration,
-    //         "Voting has already ended"
-    //     );
-    //     require(voters[_id][msg.sender] == false, "You have already voted");
-    //     if (_vote == Vote.YES) member.yayVotes += 1;
-    //     else member.nayVotes += 1;
-    //     voters[_id][msg.sender] == true;
-    // }
+    // Voting on the Active proposals
+    function vote(Vote _vote, uint256 _proposalID) public onlyActiveDAOMembers {
+        campaignProposal memory _campaign = proposals[_proposalID];
+        require(
+            block.timestamp > _campaign.startTime,
+            "You can't approve this proposal before the voting starts."
+        );
+        require(
+            block.timestamp < _campaign.startTime + votingDuration,
+            "Voting has already ended"
+        );
+        require(voters[_id][msg.sender] == false, "You have already voted");
+        if (_vote == Vote.YES) _campaign.yayVotes += 1;
+        else member.nayVotes += 1;
+        voters[_id][msg.sender] == true;
+
+        ///mints some token for verifying and voting
+        /// 10 tokens for a vote are minted to the user
+        _tokenContract.mint(msg.sender, 10);
+    }
 
     /// Finalize the Voting and Create the Fund Contract if approved , with marked as verified
+    /// Voting Can be ended only by the manager , without any time Limit for now
+    function completeVoting(uint256 _proposalID)
+        public
+        onlyManager
+        returns (uint256 campaignID)
+    {
+        campaignProposal memory _campaign = proposals[_proposalID];
+        require(!_campaign.verified, "ALREADY VERIFIED");
+        // require(
+        //     block.timestamp > _campaign.startTime + votingDuration,
+        //     "Voting hasn't ended yet for this member!"
+        // );
+        if (member.yayVotes > member.nayVotes) {
+            _campaign.verified = true;
+            _campaign.status = campaignStatus.ACTIVE;
+
+            /// Add the proposals to active Campaign
+            campaignID = totalCampaigns;
+            campaigns[campaignID] = _campaign;
+
+            totalCampaigns += 1;
+            /// create the funding Contract and details over there
+
+            _managerContract.createFundContract(
+                campaignID,
+                _proposalID,
+                _campaign._infoCID,
+                _campaign.amountReq,
+                _campaign.duration,
+                _campaign.creator
+            );
+
+            // This Completed the fund creation method from here , further Campaign Managmenet is handled from the Manager
+        } else {
+            /// Cancel the campaign
+            _campaign.verified = false;
+            _campaign.status = campaignStatus.CANCELLED;
+        }
+    }
 }

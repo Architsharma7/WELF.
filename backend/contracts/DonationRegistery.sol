@@ -20,15 +20,26 @@ contract DonationRegistery is Ownable {
 
     mapping(address => Donor) public donorRecords;
 
+    mapping(address => bool) public approved;
+    modifier onlyApproved() {
+        require(approved[msg.sender], "NOT AUTHORISED");
+        _;
+    }
+
+    function approve(address user, bool status) onlyOwner {
+        approved[user] = status;
+    }
+
     /*
      *  ########  SETTER FUNCTIONS   #########
      */
 
+    // only the Fund manager can add the donor Recorded
     function addDonorRecord(
         address _user,
         uint256 campaignID,
         uint256 amountDonated
-    ) public {
+    ) public onlyApproved {
         // require(  ); Implement conditions on who can add donor Record ,  maybe just the PropFundManager can add these
 
         Donor memory _donorRecord = donorRecords[_user];

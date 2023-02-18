@@ -8,38 +8,57 @@ import styles from "../styles/progressbar.module.css";
 import { storeProposal } from "../functions/ipfsstorage";
 
 const Proposal = () => {
-
   const PageDisplay = () => {
     if (page == 0) {
-      return <ProposalTitle proposalForm={proposalForm} setProposalForm={setProposalForm}/>;
+      return (
+        <ProposalTitle
+          proposalForm={proposalForm}
+          setProposalForm={setProposalForm}
+        />
+      );
     }
     if (page == 1) {
-      return <Proposaldesc proposalForm={proposalForm} setProposalForm={setProposalForm}/>;
+      return (
+        <Proposaldesc
+          proposalForm={proposalForm}
+          setProposalForm={setProposalForm}
+        />
+      );
     }
     if (page == 2) {
-      return <Proposalamount proposalForm={proposalForm} setProposalForm={setProposalForm}/>;
+      return (
+        <Proposalamount
+          proposalForm={proposalForm}
+          setProposalForm={setProposalForm}
+        />
+      );
     }
     if (page == 3) {
-      return <Proposalimage proposalForm={proposalForm} setProposalForm={setProposalForm}/>;
+      return (
+        <Proposalimage
+          proposalForm={proposalForm}
+          setProposalForm={setProposalForm}
+        />
+      );
     }
     if (page == 4) {
-      return <Proposalpreview proposalForm={proposalForm}/>;
+      return <Proposalpreview proposalForm={proposalForm} />;
     }
   };
 
   const [page, setPage] = useState(0);
-  const formTitles = ["title", "desc", "amount","image", "preview"];
+  const formTitles = ["title", "desc", "amount", "image", "preview"];
   const [proposalForm, setProposalForm] = useState({
     title: "",
     desc: "",
     donation: "",
     donationbreakage: "",
     images: "",
-})
+  });
 
-  const [ipfsLink, setIpfsLink] = useState("")
+  const [ipfsLink, setIpfsLink] = useState("");
 
-  async function getProposal(){
+  async function getProposal() {
     const CID = await storeProposal(proposalForm);
     const IPFSURL = `https://w3s.link/ipfs/${CID}`;
     console.log(IPFSURL, "IPFSURL");
@@ -53,7 +72,16 @@ const Proposal = () => {
           <div className={styles.progressbar}>
             <div
               style={{
-                width: page === 0 ? "20%" : page == 1 ? "40%" : page == 2 ? "60%" : page == 3 ? "80%" : "100%",
+                width:
+                  page === 0
+                    ? "20%"
+                    : page == 1
+                    ? "40%"
+                    : page == 2
+                    ? "60%"
+                    : page == 3
+                    ? "80%"
+                    : "100%",
               }}
             ></div>
           </div>
@@ -94,4 +122,3 @@ const Proposal = () => {
 };
 
 export default Proposal;
-
