@@ -159,7 +159,7 @@ contract WelfDAO is Ownable {
 
     /// @dev Add Members to the DAO after minting an NFT and add their Record
     /// @dev The member Needs to call the function after minting the NFT
-    function addDAOMember(uint256 tokenId, string memory _profileCID) public {
+    function addDAOMember(uint256 tokenId, string memory _profileCID, uint256[] memory _proposals) public {
         require(
             _nftContract.ownerOf(tokenId) == msg.sender,
             "NOT THE NFT OWNER"
@@ -170,20 +170,20 @@ contract WelfDAO is Ownable {
         );
 
         daoMembers[msg.sender] = DAOMember(
-            ture,
+            true,
             memberStatus.ACTIVE,
             tokenId,
             msg.sender,
             _profileCID,
             false,
             0,
-            []
+            _proposals
         );
     }
 
     modifier onlyActiveDAOMembers() {
         require(
-            daoMembers[msg.sender].status = memberStatus.ACTIVE,
+            daoMembers[msg.sender].status == memberStatus.ACTIVE,
             "NOT A ACTIVE DAO MEMBER"
         );
         _;
@@ -191,7 +191,7 @@ contract WelfDAO is Ownable {
 
     function verifyDAOMember(address user) public onlyManager {
         require(
-            daoMembers[user].status = memberStatus.ACTIVE,
+            daoMembers[user].status == memberStatus.ACTIVE,
             "NOT A ACTIVE DAO MEMBER"
         );
         daoMembers[user].verified = true;
@@ -223,7 +223,7 @@ contract WelfDAO is Ownable {
     function getMemberStatus(address user)
         public
         view
-        returns (memberStatus memory _status)
+        returns (memberStatus  _status)
     {
         _status = daoMembers[user].status;
     }
@@ -272,10 +272,10 @@ contract WelfDAO is Ownable {
             block.timestamp < _campaign.startTime + votingDuration,
             "Voting has already ended"
         );
-        require(voters[_id][msg.sender] == false, "You have already voted");
+        require(voters[_proposalID][msg.sender] == false, "You have already voted");
         if (_vote == Vote.YES) _campaign.yayVotes += 1;
-        else member.nayVotes += 1;
-        voters[_id][msg.sender] == true;
+        else _campaign.nayVotes += 1;
+        voters[_proposalID][msg.sender] == true;
 
         ///mints some token for verifying and voting
         /// 10 tokens for a vote are minted to the user
@@ -295,7 +295,7 @@ contract WelfDAO is Ownable {
         //     block.timestamp > _campaign.startTime + votingDuration,
         //     "Voting hasn't ended yet for this member!"
         // );
-        if (member.yayVotes > member.nayVotes) {
+        if (_campaign.yayVotes > _campaign.nayVotes) {
             _campaign.verified = true;
             _campaign.status = campaignStatus.ACTIVE;
 

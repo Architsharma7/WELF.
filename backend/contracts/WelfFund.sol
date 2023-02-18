@@ -37,7 +37,7 @@ contract WelfFunds is Ownable {
     event withdrawalToken(address token, address user, uint256 amount);
 
     mapping(address => bool) contributors;
-    mapping(address => uint) stakers;
+    mapping(address => uint256) stakers;
 
     uint256 public stakedAmount;
 
@@ -122,11 +122,14 @@ contract WelfFunds is Ownable {
      */
 
     // function to add the staking
-    function intiateStake(address _from) external payable onlyNFTContract {
-        require(msg.value > 0, "NO ETHER SENT ");
-        stakers[_from] = msg.value;
+    function intiateStake(address _from, uint256 amount)
+        external
+        onlyNFTContract
+    {
+        // require(msg.value > 0, "NO ETHER SENT ");
+        stakers[_from] = amount;
 
-        stakedAmount += msg.value;
+        stakedAmount += amount;
     }
 
     // function to return the joining fees
