@@ -37,7 +37,7 @@ contract WelfFunds is Ownable {
     event withdrawalToken(address token, address user, uint256 amount);
 
     mapping(address => bool) contributors;
-    mapping(address => amount) stakers;
+    mapping(address => uint) stakers;
 
     uint256 public stakedAmount;
 
@@ -138,7 +138,7 @@ contract WelfFunds is Ownable {
         uint256 amount = stakers[_userAddress];
         require(amount > 0, "NO STAKED AMOUNT FOUND");
 
-        stakedAmount -= msg.value;
+        stakedAmount -= amount;
         // send out the Staked Amount back to the User
         (bool success, ) = _userAddress.call{value: amount}("");
         require(success, "Return failed");

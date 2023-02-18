@@ -19,8 +19,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract WelfDAOToken is ERC20, Ownable {
     address public manager;
 
+    mapping(address => bool) public approved;
+
     constructor() ERC20("Welf Token", "Welf") {
         manager = msg.sender;
+        approved[msg.sender] = true;
     }
 
     modifier onlyManager() {
@@ -32,13 +35,23 @@ contract WelfDAOToken is ERC20, Ownable {
         manager = newManager;
     }
 
+    modifier onlyApproved() {
+        require(approved[msg.sender], "NOT AUTHORISED");
+        _;
+    }
+
+    function approve(address user, bool status) public onlyManager {
+        approved[user] = status;
+    }
+
+    // DAO Contract can vote
     /// Manager can only Award the tokens for certain purposes ,handled on the frontend
-    function mint(address _to, uint256 _amount) external onlyManager {
+    function mint(address _to, uint256 _amount) external onlyApproved {
         _mint(_to, _amount);
     }
 
     /// Manager can only burn the tokens form certain address to handle the supply based upon some conditions
-    function burn(address _from, uint256 _amount) external onlyManager {
+    function burn(address _from, uint256 _amount) external onlyApproved {
         _burn(_from, _amount);
     }
 }

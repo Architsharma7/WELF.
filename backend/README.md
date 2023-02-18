@@ -70,6 +70,10 @@ Model
 --> This Campaign is open for funding , managed via the FUND Manager
 --> On completion , the , funds could be withdrawn
 
+/// WE have 2 IDs
+--> Proposal IDs
+--> Campaign IDs
+
 ### Fund Donation
 
 --> Once the Campaign is verified , It will show up for the users to donate
@@ -82,3 +86,9 @@ Model
 
 -->
 -->
+
+## PENDING TASKS
+
+--> Proper Withdrawl
+--> Campaign Closing
+--> Tokens redemption

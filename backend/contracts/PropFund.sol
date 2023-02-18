@@ -91,7 +91,7 @@ contract PropFund is Ownable {
         uint256 amount
     ) public onlyManager {
         IERC20(token).transferFrom(from, address(this), amount);
-        emit withdrawalToken(token, to, amount);
+  
     }
 
     function withdrawTokens(
@@ -112,7 +112,6 @@ contract PropFund is Ownable {
         public
         payable
         onlyManager
-        returns (bool)
     {
         require(msg.value > 0, "No Value Sent");
         contributors[_from] += msg.value;
