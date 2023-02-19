@@ -80,13 +80,13 @@ contract WelfDAO is Ownable {
     address public manager;
 
     address public nftContractAddress;
-    NFTContract public _nftContract;
+    NFTContract public _nftContract ;
 
     address public fundManagerAddress;
     campaignManager public _managerContract;
 
     address public tokenContractAddress;
-    TokenContract public _tokenContract;
+    TokenContract public _tokenContract ;
 
     /*
      *  ########  MEMBER VARAIBLES   #########
@@ -161,11 +161,7 @@ contract WelfDAO is Ownable {
 
     /// @dev Add Members to the DAO after minting an NFT and add their Record
     /// @dev The member Needs to call the function after minting the NFT
-    function addDAOMember(
-        uint256 tokenId,
-        string memory _profileCID,
-        uint256[] memory _proposals
-    ) public {
+    function addDAOMember(uint256 tokenId, string memory _profileCID, uint256[] memory _proposals) public {
         require(
             _nftContract.ownerOf(tokenId) == msg.sender,
             "NOT THE NFT OWNER"
@@ -229,7 +225,7 @@ contract WelfDAO is Ownable {
     function getMemberStatus(address user)
         public
         view
-        returns (memberStatus _status)
+        returns (memberStatus  _status)
     {
         _status = daoMembers[user].status;
     }
@@ -278,10 +274,7 @@ contract WelfDAO is Ownable {
             block.timestamp < _campaign.startTime + votingDuration,
             "Voting has already ended"
         );
-        require(
-            voters[_proposalID][msg.sender] == false,
-            "You have already voted"
-        );
+        require(voters[_proposalID][msg.sender] == false, "You have already voted");
         if (_vote == Vote.YES) _campaign.yayVotes += 1;
         else _campaign.nayVotes += 1;
         voters[_proposalID][msg.sender] == true;

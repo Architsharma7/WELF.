@@ -5,9 +5,41 @@ import Proposalimage from "../components/proposalimage";
 import Proposalpreview from "../components/proposalpreview";
 import ProposalTitle from "../components/ProposalTitle";
 import styles from "../styles/progressbar.module.css";
-import { storeProposal } from "../functions/ipfsstorage";
+import { StoreContent, storeProposal } from "../functions/ipfsstorage";
+import { useAccount, useContract, useProvider, useSigner } from "wagmi";
+import {
+  DAO_CONTRACT_ABI,
+  DAO_CONTRACT_ADDRESS,
+  NFT_CONTRACT_ABI,
+  NFT_CONTRACT_ADDRESS,
+} from "../constants/constants";
+import { ethers } from "ethers";
 
 const Proposal = () => {
+  const [page, setPage] = useState(0);
+  const formTitles = ["title", "desc", "amount", "image", "preview"];
+  const [proposalForm, setProposalForm] = useState({
+    title: "",
+    desc: "",
+    donation: "",
+    donationbreakage: "",
+    images: "",
+  });
+  const [files, setFiles] = useState([]);
+  const [videoFile, setVideoFile] = useState([]);
+
+  const [ipfsLink, setIpfsLink] = useState("");
+
+  const { address, isConnected } = useAccount();
+  const provider = useProvider();
+  const { data: signer } = useSigner();
+
+  const DAO_Contract = useContract({
+    address: DAO_CONTRACT_ADDRESS,
+    abi: DAO_CONTRACT_ABI,
+    signerOrProvider: signer || provider,
+  });
+
   const PageDisplay = () => {
     if (page == 0) {
       return (
@@ -38,6 +70,8 @@ const Proposal = () => {
         <Proposalimage
           proposalForm={proposalForm}
           setProposalForm={setProposalForm}
+          imageFile={files}
+          setImageFile={setFiles}
         />
       );
     }
@@ -46,24 +80,53 @@ const Proposal = () => {
     }
   };
 
-  const [page, setPage] = useState(0);
-  const formTitles = ["title", "desc", "amount", "image", "preview"];
-  const [proposalForm, setProposalForm] = useState({
-    title: "",
-    desc: "",
-    donation: "",
-    donationbreakage: "",
-    images: "",
-  });
+  const uploadData = async () => {
+    try {
+      /// Image upload
+      if (!files) console.log("No Image file added");
+      // console.log(files);
+      const imagecid = await StoreContent(files);
+      const imageURL = `https://w3s.link/ipfs/${imagecid}`;
+      console.log(imageURL);
 
-  const [ipfsLink, setIpfsLink] = useState("");
+      // if (!videoFile) console.log("No Image file added");
+      // const videoCID = await StoreContent(videoFile);
+      // const videoURL = `https://w3s.link/ipfs/${videoCID}`;
+      // console.log(videoURL);
+      const videoURL = "";
 
-  async function getProposal() {
-    const CID = await storeProposal(proposalForm);
-    const IPFSURL = `https://w3s.link/ipfs/${CID}`;
-    console.log(IPFSURL, "IPFSURL");
-    setIpfsLink(IPFSURL);
-  }
+      const proposal = {
+        title: proposalForm.title,
+        desc: proposalForm.desc,
+        donation: proposalForm.donation,
+        donationbreakage: proposalForm.donationbreakage,
+        imageCID: imageURL,
+        videoCID: videoURL,
+      };
+
+      const proposalCID = await storeProposal(proposal);
+      const IPFSURL = `https://w3s.link/ipfs/${proposalCID}`;
+      console.log(IPFSURL, "IPFSURL");
+      setIpfsLink(IPFSURL);
+      addData(IPFSURL);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addData = async (ipfsURL) => {
+    try {
+      console.log("Adding data to the record ");
+      const amount = ethers.utils.parseEther(proposalForm.donation);
+      const duration = 864000;
+      const tx = await DAO_Contract.createProposal(ipfsURL, amount, duration);
+      await tx.wait();
+      console.log(tx);
+      console.log("Proposal Added to the contract");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-screen">
@@ -105,8 +168,8 @@ const Proposal = () => {
               className="bg-violet-400 px-7 4xl:px-12 md:py-2 py-1 4xl:py-3 rounded-lg text-center text-white hover:scale-110 transition duration-200 4xl:text-4xl"
               onClick={() => {
                 if (page === formTitles.length - 1) {
-                  alert("form submitted");
-                  getProposal();
+                  // alert("form submitted");
+                  uploadData();
                 } else {
                   setPage((currPage) => currPage + 1);
                 }
