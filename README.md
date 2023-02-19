@@ -3,6 +3,10 @@
 A decentralised fundraising platform based on DAO monitoring.
 Provides more transparency and security of donated funds.
 
+<img width="1440" alt="Screenshot 2023-02-19 at 11 46 21 PM" src="https://user-images.githubusercontent.com/90101251/219970973-10e08185-d2dd-4b01-9c1b-6e675b721965.png">
+
+[Video Link](https://www.loom.com/share/609a70c5c5bd43d18531ef60aaa2a2ce)
+
 ## 🤷‍♀️ Question Time
 
 ### 👨‍🔬 What is this and what was this built for?
