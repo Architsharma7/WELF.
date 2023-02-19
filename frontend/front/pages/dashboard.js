@@ -4,12 +4,12 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 const Dashboard = () => {
   return (
     <div className="w-screen">
-      <div className="w-3/5 flex mx-auto">
+      <div className=" xl:w-/5 w-screen flex mx-auto justify-center">
         <div className="flex flex-col justify-center mx-auto mt-10 text-center">
-          <p className="text-5xl text-black">User Name</p>
+          <p className="xl:text-5xl text-2xl text-black">User Name</p>
           <span className="">
             {" "}
-            <p className="text-2xl text-black mt-4">
+            <p className="xl:text-2xl text-base text-black mt-4">
               0x9B855D0Edb3111891a6A0059273904232c74815D
             </p>
             <a href="/">Verified</a>
@@ -21,6 +21,7 @@ const Dashboard = () => {
                 <Tab>Proposals Created</Tab>
                 <Tab>Proposals Elected</Tab>
                 <Tab>Proposals Voted On</Tab>
+                <Tab>Campaigns</Tab>
               </TabList>
               <TabPanels>
                 <TabPanel>
@@ -31,6 +32,9 @@ const Dashboard = () => {
                 </TabPanel>
                 <TabPanel>
                   <p>three!</p>
+                </TabPanel>
+                <TabPanel>
+                  <p>four!</p>
                 </TabPanel>
               </TabPanels>
             </Tabs>

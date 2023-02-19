@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Link from "next/link";
 
-const Explore = () => {
+const Campaign = () => {
 
   const [data, setData] = useState();
 
@@ -16,7 +16,7 @@ const Explore = () => {
   return (
     <div className="w-screen">
       <div className="w-4/5 flex justify-center mx-auto flex-col items-center">
-        <p className="text-3xl mt-10">Proposals</p>
+        <p className="text-3xl mt-10">Campaigns</p>
         <div className="grid lg:grid-cols-3 grid-cols-1 mt-20 w-full items-center text-center gap-x-6 gap-y-10">
             <Link href="/">
           <div className="flex flex-col items-center bg-slate-100 shadow-xl border-black border rounded-xl px-4 py-3 h-[450px]">
@@ -108,5 +108,4 @@ const Explore = () => {
   );
 };
 
-export default Explore;
-
+export default Campaign;
