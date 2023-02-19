@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Spinner } from "@chakra-ui/react";
 
 const Pay = () => {
+  const [campaignID, setCampaignID] = useState();
   const router = useRouter();
-
-  const payID = router.query.payID;
 
   const [payable, setPayable] = useState("");
   const [loading, setLoading] = useState(false);
-  // console.log(payID);
+
+  useEffect(() => {
+    const id = router.query.payID;
+    if (id) {
+      setCampaignID(id);
+    }
+  }, [router.query.payID]);
+
   return (
     <div className="xl:w-screen w-4/5 mx-auto flex">
       <div className="mx-auto flex flex-col justify-center align-middle mt-20">

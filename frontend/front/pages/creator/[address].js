@@ -9,6 +9,7 @@ import { ethers } from "ethers";
 
 const CreatorProfile = () => {
   const [creatorAddress, setCreatorAddress] = useState();
+  const [creatorData, setCreatorData] = useState();
   const router = useRouter();
 
   const { address, isConnected } = useAccount();
@@ -21,13 +22,35 @@ const CreatorProfile = () => {
   });
 
   useEffect(() => {
-    const address = router.query.address;
-    if (address) {
-      const creatorAddress = router.query.address;
+    const creatorAddress = router.query.address;
+    if (creatorAddress) {
       console.log(creatorAddress);
       setCreatorAddress(creatorAddress);
+      getUserData(creatorAddress);
     }
   }, [router.query.address]);
+
+  const getUserData = async (creatorAddress) => {
+    try {
+      const data = await DAO_Contract.getMemberData(creatorAddress);
+      // console.log(data);
+      const ipfsData = await (await fetch(data.profileCID)).json();
+      // console.log(ipfsData);
+      const memberData = {
+        name: ipfsData.name,
+        bio: ipfsData.bio,
+        pfp: ipfsData.pfp,
+        country: ipfsData.country,
+        tokenID: parseInt(data.NFTTokenID),
+        verified: data.verified,
+        status: data.status,
+      };
+      //   console.log(memberData);
+      setCreatorData(memberData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-screen flex h-screen">
