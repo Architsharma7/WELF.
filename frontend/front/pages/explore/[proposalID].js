@@ -6,6 +6,8 @@ import {
   DAO_CONTRACT_ADDRESS,
 } from "../../constants/constants";
 import { ethers } from "ethers";
+import { IconButton } from '@chakra-ui/react'
+import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 
 const SpecificProposal = () => {
   const [proposalID, setProposalID] = useState();
@@ -52,6 +54,21 @@ const SpecificProposal = () => {
     }
   };
 
+  // console.log(proposalData.status)
+  // console.log(proposalData.image)
+
+  const timeofproposal = () => {
+    var date = new Date(proposalData.startTime * 1000);
+    var hours = date.getHours();
+    var minutes = "0" + date.getMinutes();
+    var seconds = "0" + date.getSeconds();
+    var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    return formattedTime;
+  }
+
+  // console.log(proposalData.duration)
+  // console.log(proposalData.startTime)
+
   useEffect(() => {
     const id = router.query.proposalID;
     if (id) {
@@ -59,10 +76,49 @@ const SpecificProposal = () => {
       fetchProposal(id);
     }
   }, [router.query.proposalID]);
+
   return (
-    <div className="w-screen flex h-screen">
-      <div className="mx-auto flex justify-center align-middle">
-        <p className="text-black text-8xl">{proposalID} proposal id</p>
+    <div className="w-screen">
+      
+        <div className="">
+          <div className="flex lg:flex-row flex-col">
+          {proposalData ? (
+            <div className="mx-auto flex lg:flex-row flex-col mt-10">
+            <div className="w-4/5 justify-center flex lg:flex-row flex-col mx-auto">
+              <div className="lg:w-4/5 w-full flex flex-col items-center lg:items-start mx-auto lg:mx-6">
+                <p className="text-black text-4xl text-center">{proposalData.title}</p>
+                {/* <img src={proposalData.image} alt="Problem in fetching image from ipfs"/>
+            <video src={proposalData.video} alt="Problem in fetching image from ipfs"/> */}
+                <p className="text-black text-xl mt-10 text-justify">{proposalData.description}</p>
+                <p className="text-2xl text-black mt-10">Proposed Usage of Donations</p>
+                <p className="text-black text-xl mt-10 text-justify">{proposalData.breakage}</p>
+              </div>
+              <div className="lg:w-1/5 w-full flex flex-col bg-indigo-100 py-3 rounded-xl mt-10 lg:mt-0 mb-10">
+                <div className="mx-4">
+                  <p className="text-center text-lg">Created by:</p>
+                  <p className="text-center text-lg mt-7">{proposalData.creator}</p>
+                  <p className="text-center text-base mt-3">{proposalData.verified}</p>
+                  <p className="text-center text-base mt-2">{proposalData.status  === 0 ? "Not Active" :  proposalData.status === 1 ? "Active" : proposalData.status === 2 ? "Removed" : "Underwatch"}</p>
+                  <p className="text-center text-lg mt-7">Donation Raising</p>
+                  <p className="text-center text-3xl mt-3">$ {`${proposalData.amount}`}</p>
+                  <p className="text-center text-lg mt-7">Voting Starting At:</p>
+                  <p className="text-center text-xl mt-2">{timeofproposal()}</p>
+                  <p className="text-center text-2xl mt-7">Vote</p>
+                  <div className="items-center mt-7 mx-auto flex justify-center">
+                  <span>
+                    <IconButton icon={<AddIcon/>} size="lg" className="mx-3"/> 
+                    <IconButton icon={<MinusIcon/>} size="lg" className="mx-3"/>
+                  </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          ) : (
+            <div></div>
+          )}
+          </div>
+        
       </div>
     </div>
   );
