@@ -217,7 +217,7 @@ const SpecificProposal = () => {
             ) : (
               <div></div>
             )}
-          </div>
+        </div>
         )}
       </div>
     </div>

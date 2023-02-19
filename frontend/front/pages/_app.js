@@ -4,11 +4,13 @@ import { ChakraProvider } from "@chakra-ui/react";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { mainnet, polygon, optimism, arbitrum } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import Navbar from "../components/navbar";
 import { useRouter } from "next/router";
+import { AuthProvider } from "../auth/authContext";
 
 const mantleTestnet = {
   id: 5001,
@@ -35,7 +37,7 @@ const mantleTestnet = {
 
 const { chains, provider } = configureChains(
   [mantleTestnet],
-  [alchemyProvider({ apiKey: process.env.ALCHEMY_ID }), publicProvider()]
+  [publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({
@@ -49,21 +51,21 @@ const wagmiClient = createClient({
   provider,
 });
 
-
 const myFont = localFont({ src: "./CalSans-SemiBold.woff2" });
 
-
 function MyApp({ Component, pageProps }) {
-  const router = useRouter()
-  const showNavbar = (router.pathname == "/" ? false : true)
+  const router = useRouter();
+  const showNavbar = router.pathname == "/" ? false : true;
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         <ChakraProvider>
-          <main className={myFont.className}>
-           {showNavbar && <Navbar/>}
-            <Component {...pageProps} />
-          </main>
+          <AuthProvider>
+            <main className={myFont.className}>
+              {showNavbar && <Navbar />}
+              <Component {...pageProps} />
+            </main>
+          </AuthProvider>
         </ChakraProvider>
       </RainbowKitProvider>
     </WagmiConfig>
