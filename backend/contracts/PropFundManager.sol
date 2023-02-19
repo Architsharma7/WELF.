@@ -62,11 +62,10 @@ contract PropFundManager is Ownable {
     mapping(address => bool) public approved;
 
     address public registeryAddress;
-    DonationRegistery public _donationRegistery =
-        DonationRegistery(registeryAddress);
+    DonationRegistery public _donationRegistery ;
 
     address public tokenContractAddress;
-    TokenContract public _tokenContract = TokenContract(tokenContractAddress);
+    TokenContract public _tokenContract ;
 
     constructor(
         address _manager,
@@ -76,6 +75,9 @@ contract PropFundManager is Ownable {
         manager = _manager;
         registeryAddress = _regsiteryAddress;
         tokenContractAddress = _tokenAddress;
+        _donationRegistery =
+        DonationRegistery(registeryAddress);
+        _tokenContract = TokenContract(tokenContractAddress);
         approved[msg.sender] = true;
         approved[manager] = true;
         transferOwnership(manager);
