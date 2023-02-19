@@ -64,10 +64,7 @@ const Mainpage = () => {
                 <div className="w-full py-4 4xl:py-16 px-10 border bg-neutral-100 rounded-xl flex flex-col items-center border-indigo-500">
                   <Image src={wel} height={400} width={400} alt="hello" />
                   <p className="xl:text-xl 4xl:text-4xl lg:text-lg">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Voluptatibus sit itaque pariatur error impedit adipisci
-                    veniam iste cumque a odit animi in, aspernatur minus? Quo
-                    officia non deleniti nisi doloribus.
+                    We provide hassle free donations with Mantle Chain and all the data stored on IPFS which makes the data more secure.
                   </p>
                 </div>
               </div>
