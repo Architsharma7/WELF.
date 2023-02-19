@@ -13,6 +13,7 @@ const SpecificProposal = () => {
   const [proposalID, setProposalID] = useState();
   const [proposalData, setProposalData] = useState();
   const router = useRouter();
+  const [daomemberData, setDaoMemberData] = useState();
 
   // console.log(proposalID);
 
@@ -32,6 +33,11 @@ const SpecificProposal = () => {
       // console.log(data);
       const proposalData = await (await fetch(data._infoCID)).json();
       // console.log(proposalData);
+
+      // User Data
+      const userData = await getUserData(data.creator);
+      // console.log(userData);
+
       const finalData = {
         proposalID: proposalId,
         title: proposalData.title,
@@ -43,12 +49,35 @@ const SpecificProposal = () => {
         duration: parseInt(data.duration),
         startTime: parseInt(data.startTime),
         fundContract: data.fundContract,
-        creator: data.creator,
+        creatorAddress: data.creator,
+        creatorData: userData,
         verified: data.verified,
         status: data.status,
       };
       // console.log(finalData);
       setProposalData(finalData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getUserData = async (creatorAddress) => {
+    try {
+      const data = await DAO_Contract.getMemberData(creatorAddress);
+      // console.log(data);
+      const ipfsData = await (await fetch(data.profileCID)).json();
+      // console.log(ipfsData);
+      const memberData = {
+        name: ipfsData.name,
+        bio: ipfsData.bio,
+        pfp: ipfsData.pfp,
+        country: ipfsData.country,
+        tokenID: parseInt(data.NFTTokenID),
+        verified: data.verified,
+        status: data.status,
+      };
+      setDaoMemberData(memberData)
+      return memberData;
     } catch (error) {
       console.log(error);
     }
@@ -96,8 +125,9 @@ const SpecificProposal = () => {
               <div className="lg:w-1/5 w-full flex flex-col bg-indigo-100 py-3 rounded-xl mt-10 lg:mt-0 mb-10">
                 <div className="mx-4">
                   <p className="text-center text-lg">Created by:</p>
-                  <p className="text-center text-lg mt-7">{proposalData.creator}</p>
-                  <p className="text-center text-base mt-3">{proposalData.verified}</p>
+                  <p className="text-center text-lg mt-1">{daomemberData.name}</p>
+                  <p className="text-center text-sm mt-0">{daomemberData.country}</p>
+                  <p className="text-center text-sm mt-3">{proposalData.verified}</p>
                   <p className="text-center text-base mt-2">{proposalData.status  === 0 ? "Not Active" :  proposalData.status === 1 ? "Active" : proposalData.status === 2 ? "Removed" : "Underwatch"}</p>
                   <p className="text-center text-lg mt-7">Donation Raising</p>
                   <p className="text-center text-3xl mt-3">$ {`${proposalData.amount}`}</p>
