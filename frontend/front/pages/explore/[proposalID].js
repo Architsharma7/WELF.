@@ -140,7 +140,7 @@ const SpecificProposal = () => {
       <div className="">
         {loading ? (
           <div className="mx-auto flex justify-center mt-20">
-          <Spinner size="xl" />
+            <Spinner size="xl" />
           </div>
         ) : (
           <div className="flex lg:flex-row flex-col">
@@ -155,6 +155,7 @@ const SpecificProposal = () => {
             <video src={proposalData.video} alt="Problem in fetching image from ipfs"/> */}
                     <img src={proposalData.image} alt="" className="mt-10" />
                     <video
+                      src={proposalData.video}
                       id="my-video"
                       class="video-js"
                       controls
@@ -217,7 +218,7 @@ const SpecificProposal = () => {
             ) : (
               <div></div>
             )}
-        </div>
+          </div>
         )}
       </div>
     </div>
