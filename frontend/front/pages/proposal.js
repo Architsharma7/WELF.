@@ -14,6 +14,9 @@ import {
   NFT_CONTRACT_ADDRESS,
 } from "../constants/constants";
 import { ethers } from "ethers";
+import { Spinner } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useToast } from '@chakra-ui/react'
 
 // Proposal Status
 // 0-> ACTIVE
@@ -38,16 +41,17 @@ const Proposal = () => {
     donation: "",
     donationbreakage: "",
     images: "",
+    videos: "",
   });
   const [files, setFiles] = useState([]);
   const [videoFile, setVideoFile] = useState([]);
-
+  const [loading, setLoading] = useState(false)
   const [ipfsLink, setIpfsLink] = useState("");
-
+  const router = useRouter()
   const { address, isConnected } = useAccount();
   const provider = useProvider();
   const { data: signer } = useSigner();
-
+  const toast = useToast();
   const DAO_Contract = useContract({
     address: DAO_CONTRACT_ADDRESS,
     abi: DAO_CONTRACT_ABI,
@@ -86,6 +90,8 @@ const Proposal = () => {
           setProposalForm={setProposalForm}
           imageFile={files}
           setImageFile={setFiles}
+          videoInput = {videoFile}
+          setVideoInput = {setVideoFile}
         />
       );
     }
@@ -97,17 +103,17 @@ const Proposal = () => {
   const uploadData = async () => {
     try {
       /// Image upload
+      setLoading(true)
       if (!files) console.log("No Image file added");
       // console.log(files);
       const imagecid = await StoreContent(files);
       const imageURL = `https://w3s.link/ipfs/${imagecid}`;
       console.log(imageURL);
 
-      // if (!videoFile) console.log("No Image file added");
-      // const videoCID = await StoreContent(videoFile);
-      // const videoURL = `https://w3s.link/ipfs/${videoCID}`;
-      // console.log(videoURL);
-      const videoURL = "";
+      if (!videoFile) console.log("No Image file added");
+      const videoCID = await StoreContent(videoFile);
+      const videoURL = `https://w3s.link/ipfs/${videoCID}`;
+      console.log(videoURL);
 
       const proposal = {
         title: proposalForm.title,
@@ -137,6 +143,15 @@ const Proposal = () => {
       await tx.wait();
       console.log(tx);
       console.log("Proposal Added to the contract");
+      setLoading(false);
+      toast({
+        title: 'Proposal Created.',
+        description: "We've created your account for you.",
+        status: 'success',
+        duration: 4000,
+        isClosable: true,
+      })
+      router.push("/campaign")
     } catch (error) {
       console.log(error);
     }
@@ -189,7 +204,7 @@ const Proposal = () => {
                 }
               }}
             >
-              {page == formTitles.length - 1 ? "submit" : "next"}
+              {page == formTitles.length - 1 ? `${loading ? "loading..." : "Submit"}` : "next"}
             </button>
           </div>
         </div>

@@ -5,6 +5,8 @@ const Proposalimage = ({
   setProposalForm,
   imageFile,
   setImageFile,
+  videoInput,
+  setVideoInput,
 }) => {
   return (
     <div className="flex flex-col">
@@ -27,6 +29,24 @@ const Proposalimage = ({
               setProposalForm({
                 ...proposalForm,
                 images: URL.createObjectURL(e.target.files[0]),
+              });
+            }}
+          />
+        </div>
+      </div>
+      <p className="text-black lg:text-2xl text-xl mt-10 4xl:mt-20 4xl:text-5xl">Video</p>
+      <div className="flex justify-center mx-auto border border-dashed border-black h-[100px] lg:w-[600px] w-[300px] md:w-[500px] 4xl:h-[300px] 4xl:w-[1200px] mt-5 4xl:mt-16">
+        <div className="flex justify-center my-auto mx-auto">
+          <input
+            type="file"
+            accept="video/*"
+            className="4xl:text-3xl text-sm lg:text-base"
+            // value={imageFile}
+            onChange={(e) => {
+              setVideoInput(e.target.files[0]);
+              setProposalForm({
+                ...proposalForm,
+                videos: URL.createObjectURL(e.target.files[0]),
               });
             }}
           />

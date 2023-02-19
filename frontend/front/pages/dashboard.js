@@ -99,13 +99,15 @@ const Dashboard = () => {
   };
   return (
     <div className="w-screen">
-      {userData && (
-        <div className="w-3/5 flex mx-auto">
-          <div className="flex flex-col justify-center mx-auto mt-10 text-center">
-            <p className="text-5xl text-black">{userData.name}</p>
-            <span className="">
-              {" "}
-              <p className="text-2xl text-black mt-4">{address}</p>
+      {userData ? (
+        <div className=" xl:w-/5 w-screen flex mx-auto justify-center">
+        <div className="flex flex-col justify-center mx-auto mt-10 text-center">
+          <p className="xl:text-5xl text-2xl text-black">{userData.name}</p>
+          <span className="">
+            {" "}
+            <p className="xl:text-2xl text-base text-black mt-4">
+              {address}
+            </p>
               <a href="/">{userData.verified ? "Verified" : "Not Verified"}</a>
             </span>
             {/* /// Need to fetch the Location and area from the pincode */}
@@ -154,7 +156,12 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-      )}
+      ): <div className="w-screen h-screen">
+        <div className="flex justify-center mx-auto my-auto mt-32 items-center">
+          <p className="text-3xl text-black mx-4">Please connect wallet to see your Dashboard</p>
+        </div>
+        </div>
+        }
     </div>
   );
 };
