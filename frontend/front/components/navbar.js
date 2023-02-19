@@ -56,14 +56,14 @@ const Navbar = () => {
               <div className="w-screen bg-white py-4 px-3 flex flex-col items-center mx-auto justify-center text-center">
                 {isDAOMember ? (
                   <ul>
-                    <li className="text-black my-2">
-                      <a href="/">Home</a>
-                    </li>
                     <li className="text-black mt-2">
                       <a href="/campaign">Campaigns</a>
                     </li>
                     <li className="text-black my-2">
                       <a href="/explore">Proposals</a>
+                    </li>
+                    <li className="text-black my-2">
+                      <a href="/proposal">Create</a>
                     </li>
                     <li className="text-black my-2">
                       <a href="/dashboard">Dashboard</a>

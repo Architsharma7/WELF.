@@ -41,36 +41,36 @@ export function AuthProvider({ children }) {
     checkUser();
   }, [address]);
 
-  useEffect(() => {
-    const authCheck = () => {
-      // console.log(router);
-      if (
-        !isDAOMember &&
-        !publicPaths.includes(router.pathname.split("?")[0])
-      ) {
-        // console.log("NOT A PUBLIC ROUTE");
-        setAuthorized(false);
-        // dispatch(setRedirectLink({ goto: router.asPath }));
-        void router.push({
-          pathname: "/onboarding",
-        });
-      } else {
-        setAuthorized(true);
-      }
-    };
+  // useEffect(() => {
+  //   const authCheck = () => {
+  //     // console.log(router);
+  //     if (
+  //       !isDAOMember &&
+  //       !publicPaths.includes(router.pathname.split("?")[0])
+  //     ) {
+  //       console.log("NOT A PUBLIC ROUTE");
+  //       setAuthorized(false);
+  //       // dispatch(setRedirectLink({ goto: router.asPath }));
+  //       void router.push({
+  //         pathname: "/onboarding",
+  //       });
+  //     } else {
+  //       setAuthorized(true);
+  //     }
+  //   };
 
-    authCheck();
+  //   authCheck();
 
-    const preventAccess = () => setAuthorized(false);
+  //   const preventAccess = () => setAuthorized(false);
 
-    router.events.on("routeChangeStart", preventAccess);
-    router.events.on("routeChangeComplete", authCheck);
+  //   router.events.on("routeChangeStart", preventAccess);
+  //   router.events.on("routeChangeComplete", authCheck);
 
-    return () => {
-      router.events.off("routeChangeStart", preventAccess);
-      router.events.off("routeChangeComplete", authCheck);
-    };
-  }, [router, router.events, address, isDAOMember]);
+  //   return () => {
+  //     router.events.off("routeChangeStart", preventAccess);
+  //     router.events.off("routeChangeComplete", authCheck);
+  //   };
+  // }, [router, router.events, address, isDAOMember]);
 
   const value = {
     isDAOMember,
