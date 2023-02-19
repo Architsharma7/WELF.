@@ -135,8 +135,8 @@ const SpecificProposal = () => {
 
   return (
     <div className="w-screen">
-      <div className="">
-        <div className="flex lg:flex-row flex-col">
+        <div className="">
+          <div className="flex lg:flex-row flex-col">
           {proposalData ? (
             <div className="mx-auto flex lg:flex-row flex-col mt-10">
               <div className="w-4/5 justify-center flex lg:flex-row flex-col mx-auto">
@@ -146,60 +146,42 @@ const SpecificProposal = () => {
                   </p>
                   {/* <img src={proposalData.image} alt="Problem in fetching image from ipfs"/>
             <video src={proposalData.video} alt="Problem in fetching image from ipfs"/> */}
-                  <p className="text-black text-xl mt-10 text-justify">
-                    {proposalData.description}
-                  </p>
-                  <p className="text-2xl text-black mt-10">
-                    Proposed Usage of Donations
-                  </p>
-                  <p className="text-black text-xl mt-10 text-justify">
-                    {proposalData.breakage}
-                  </p>
-                </div>
-                <div className="lg:w-1/5 w-full flex flex-col bg-indigo-100 py-3 rounded-xl mt-10 lg:mt-0 mb-10">
-                  <div className="mx-4">
-                    <p className="text-center text-lg">Created by:</p>
-                    <p className="text-center text-lg mt-1">
-                      {daomemberData.name}
-                    </p>
-                    <p className="text-center text-sm mt-0">
-                      {daomemberData.country}
-                    </p>
-                    <p className="text-center text-sm mt-3">
-                      {proposalData.verified}
-                    </p>
-                    <p className="text-center text-base mt-2">
-                      {getStatus(proposalData.status)}
-                    </p>
-                    <p className="text-center text-lg mt-7">Donation Raising</p>
-                    <p className="text-center text-3xl mt-3">
-                      $ {`${proposalData.amount}`}
-                    </p>
-                    <p className="text-center text-lg mt-7">
-                      Voting Ending in:
-                    </p>
-                    <p className="text-center text-xl mt-2">
-                      {timeofproposal()}
-                    </p>
-                    <p className="text-center text-2xl mt-7">Vote</p>
-                    <button onClick={() => vote(0)}>Vote YES</button>
-                    <div className="items-center mt-7 mx-auto flex justify-center">
-                      <span>
-                        <IconButton
-                          icon={<AddIcon />}
-                          size="lg"
-                          className="mx-3"
-                        />
-                        <IconButton
-                          icon={<MinusIcon />}
-                          size="lg"
-                          className="mx-3"
-                        />
-                      </span>
-                    </div>
+                <img src={proposalData.image}  alt="" className="mt-10"/>
+                <video
+                    id="my-video"
+                    class="video-js"
+                    controls
+                    preload="auto"
+                    width="640"
+                    height="264"
+                    data-setup="{}"
+                    className="mt-5"
+                  ></video>
+                <p className="text-black text-xl mt-10 text-justify">{proposalData.description}</p>
+                <p className="text-2xl text-black mt-10">Proposed Usage of Donations</p>
+                <p className="text-black text-xl mt-10 text-justify">{proposalData.breakage}</p>
+              </div>
+              <div className="lg:w-1/5 w-full flex flex-col bg-indigo-100 py-3 rounded-xl mt-10 lg:mt-0 mb-10">
+                <div className="mx-4">
+                  <p className="text-center text-lg">Created by:</p>
+                  <p className="text-center text-lg mt-1">{daomemberData.name}</p>
+                  <p className="text-center text-sm mt-0">{daomemberData.country}</p>
+                  <p className="text-center text-sm mt-3">{proposalData.verified}</p>
+                  <p className="text-center text-base mt-2">{proposalData.status  === 0 ? "Not Active" :  proposalData.status === 1 ? "Active" : proposalData.status === 2 ? "Removed" : "Underwatch"}</p>
+                  <p className="text-center text-lg mt-7">Donation Raising</p>
+                  <p className="text-center text-3xl mt-3">$ {`${proposalData.amount}`}</p>
+                  <p className="text-center text-lg mt-7">Voting Starting At:</p>
+                  <p className="text-center text-xl mt-2">{timeofproposal()}</p>
+                  <p className="text-center text-2xl mt-7">Vote</p>
+                  <div className="items-center mt-7 mx-auto flex justify-center">
+                  <span>
+                    <IconButton icon={<AddIcon/>} size="lg" className="mx-3"/> 
+                    <IconButton icon={<MinusIcon/>} size="lg" className="mx-3"/>
+                  </span>
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           ) : (
             <div></div>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import countryList from "react-select-country-list";
 import Select from "react-select";
 import { StoreContent } from "../functions/ipfsstorage";
@@ -166,7 +166,7 @@ const Onboarding = () => {
             PinCode
           </p>
           <input
-            type="text"
+            type="number"
             className="mt-3 border-blue-700 border py-1 px-3 rounded-md 4xl:text-3xl 4xl:mt-6"
             value={memberData.pincode}
             onChange={(e) =>
