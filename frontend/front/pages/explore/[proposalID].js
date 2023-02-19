@@ -108,7 +108,6 @@ const SpecificProposal = () => {
 
   return (
     <div className="w-screen">
-      
         <div className="">
           <div className="flex lg:flex-row flex-col">
           {proposalData ? (
@@ -118,6 +117,17 @@ const SpecificProposal = () => {
                 <p className="text-black text-4xl text-center">{proposalData.title}</p>
                 {/* <img src={proposalData.image} alt="Problem in fetching image from ipfs"/>
             <video src={proposalData.video} alt="Problem in fetching image from ipfs"/> */}
+                <img src={proposalData.image}  alt="" className="mt-10"/>
+                <video
+                    id="my-video"
+                    class="video-js"
+                    controls
+                    preload="auto"
+                    width="640"
+                    height="264"
+                    data-setup="{}"
+                    className="mt-5"
+                  ></video>
                 <p className="text-black text-xl mt-10 text-justify">{proposalData.description}</p>
                 <p className="text-2xl text-black mt-10">Proposed Usage of Donations</p>
                 <p className="text-black text-xl mt-10 text-justify">{proposalData.breakage}</p>
