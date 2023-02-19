@@ -8,11 +8,15 @@ import {
   DAO_CONTRACT_ADDRESS,
 } from "../../constants/constants";
 import { ethers } from "ethers";
+import { Spinner } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 const Campaign = () => {
   const [campaigns, setCampaigns] = useState();
   const { address, isConnected } = useAccount();
   const provider = useProvider();
+  const router = useRouter()
+  const [loading, setloading] = useState();
 
   const FUNDMANAGER_Contract = useContract({
     address: FUNDMANAGER_CONTRACT_ADDRESS,
@@ -43,6 +47,7 @@ const Campaign = () => {
 
   const fetchCampaigns = async () => {
     try {
+      setloading(true)
       /// fetch all the proposals , open for Voting
       const totalCampaigns = parseInt(
         await FUNDMANAGER_Contract.totalCampaigns()
@@ -58,6 +63,7 @@ const Campaign = () => {
       const campaignsData = await Promise.all(promises);
       console.log(campaignsData);
       setCampaigns(campaignsData);
+      setloading(true)
     } catch (error) {
       console.log(error);
     }
@@ -103,6 +109,11 @@ const Campaign = () => {
     <div className="w-screen">
       <div className="w-4/5 flex justify-center mx-auto flex-col items-center">
         <p className="text-3xl mt-10">Campaigns</p>
+        {loading ? (
+          <div className="mx-auto flex justify-center mt-20">
+          <Spinner size="xl" />
+          </div>
+        ) : (
         <div className="grid lg:grid-cols-3 grid-cols-1 mt-20 w-full items-center text-center gap-x-6 gap-y-10">
           {campaigns ? (
             campaigns.map((campaign) => {
@@ -145,7 +156,7 @@ const Campaign = () => {
           ) : (
             <p>No Campaigns Found</p>
           )}
-        </div>
+        </div>)}
       </div>
     </div>
   );

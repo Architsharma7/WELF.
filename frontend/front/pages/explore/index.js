@@ -6,16 +6,20 @@ import {
   DAO_CONTRACT_ADDRESS,
 } from "../../constants/constants";
 import { ethers } from "ethers";
+import { Spinner } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 const Explore = () => {
   const { address, isConnected } = useAccount();
   const provider = useProvider();
+  const router = useRouter();
 
   const DAO_Contract = useContract({
     address: DAO_CONTRACT_ADDRESS,
     abi: DAO_CONTRACT_ABI,
     signerOrProvider: provider,
   });
+  const [loading, setLoading] = useState();
 
   const [data, setData] = useState();
   const [proposals, setProposals] = useState();
@@ -30,6 +34,7 @@ const Explore = () => {
 
   const fetchProposals = async () => {
     try {
+      setLoading(true)
       /// fetch all the proposals , open for Voting
       const totalProposals = parseInt(await DAO_Contract.totalProposals());
       // console.log(totalProposals);
@@ -56,6 +61,7 @@ const Explore = () => {
       });
       console.log(finalProposals);
       setProposals(finalProposals);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -98,6 +104,11 @@ const Explore = () => {
     <div className="w-screen">
       <div className="w-4/5 flex justify-center mx-auto flex-col items-center">
         <p className="text-3xl mt-10">Proposals</p>
+        {loading ? (
+          <div className="mx-auto flex justify-center mt-20">
+          <Spinner size="xl" />
+          </div>
+        ) : (
         <div className="grid lg:grid-cols-3 grid-cols-1 mt-20 w-full items-center text-center gap-x-6 gap-y-10">
           {proposals ? (
             proposals.map((proposal) => {
@@ -148,7 +159,8 @@ const Explore = () => {
           ) : (
             <p>No Proposals found</p>
           )}
-        </div>
+        </div>)
+}
       </div>
     </div>
   );

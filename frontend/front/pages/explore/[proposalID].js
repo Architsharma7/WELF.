@@ -6,14 +6,14 @@ import {
   DAO_CONTRACT_ADDRESS,
 } from "../../constants/constants";
 import { ethers } from "ethers";
-import { IconButton } from "@chakra-ui/react";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import { Spinner } from "@chakra-ui/react";
 
 const SpecificProposal = () => {
   const [proposalID, setProposalID] = useState();
   const [proposalData, setProposalData] = useState();
   const router = useRouter();
   const [daomemberData, setDaoMemberData] = useState();
+  const [loading, setLoading] = useState();
 
   // console.log(proposalID);
 
@@ -29,6 +29,7 @@ const SpecificProposal = () => {
 
   const fetchProposal = async (proposalId) => {
     try {
+      setLoading(true);
       /// Then fetch specific Data for the same
       const data = await DAO_Contract.proposals(proposalId);
       // console.log(parseInt(data.amountReq));
@@ -57,6 +58,7 @@ const SpecificProposal = () => {
       };
       // console.log(finalData);
       setProposalData(finalData);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -136,85 +138,87 @@ const SpecificProposal = () => {
   return (
     <div className="w-screen">
       <div className="">
-        <div className="flex lg:flex-row flex-col">
-          {proposalData ? (
-            <div className="mx-auto flex lg:flex-row flex-col mt-10">
-              <div className="w-4/5 justify-center flex lg:flex-row flex-col mx-auto">
-                <div className="lg:w-4/5 w-full flex flex-col items-center lg:items-start mx-auto lg:mx-6">
-                  <p className="text-black text-4xl text-center">
-                    {proposalData.title}
-                  </p>
-                  {/* <img src={proposalData.image} alt="Problem in fetching image from ipfs"/>
+        {loading ? (
+          <div className="mx-auto flex justify-center mt-20">
+          <Spinner size="xl" />
+          </div>
+        ) : (
+          <div className="flex lg:flex-row flex-col">
+            {proposalData ? (
+              <div className="mx-auto flex lg:flex-row flex-col mt-10">
+                <div className="w-4/5 justify-center flex lg:flex-row flex-col mx-auto">
+                  <div className="lg:w-4/5 w-full flex flex-col items-center lg:items-start mx-auto lg:mx-6">
+                    <p className="text-black text-4xl text-center">
+                      {proposalData.title}
+                    </p>
+                    {/* <img src={proposalData.image} alt="Problem in fetching image from ipfs"/>
             <video src={proposalData.video} alt="Problem in fetching image from ipfs"/> */}
-                  <img src={proposalData.image} alt="" className="mt-10" />
-                  <video
-                    id="my-video"
-                    class="video-js"
-                    controls
-                    preload="auto"
-                    width="640"
-                    height="264"
-                    data-setup="{}"
-                    className="mt-5"
-                  ></video>
-                  <p className="text-black text-xl mt-10 text-justify">
-                    {proposalData.description}
-                  </p>
-                  <p className="text-2xl text-black mt-10">
-                    Proposed Usage of Donations
-                  </p>
-                  <p className="text-black text-xl mt-10 text-justify">
-                    {proposalData.breakage}
-                  </p>
-                </div>
-                <div className="lg:w-1/5 w-full flex flex-col bg-indigo-100 py-3 rounded-xl mt-10 lg:mt-0 mb-10">
-                  <div className="mx-4">
-                    <p className="text-center text-lg">Created by:</p>
-                    <p className="text-center text-lg mt-1">
-                      {daomemberData.name}
+                    <img src={proposalData.image} alt="" className="mt-10" />
+                    <video
+                      id="my-video"
+                      class="video-js"
+                      controls
+                      preload="auto"
+                      width="640"
+                      height="264"
+                      data-setup="{}"
+                      className="mt-5"
+                    ></video>
+                    <p className="text-black text-xl mt-10 text-justify">
+                      {proposalData.description}
                     </p>
-                    <p className="text-center text-sm mt-0">
-                      {daomemberData.country}
+                    <p className="text-2xl text-black mt-10">
+                      Proposed Usage of Donations
                     </p>
-                    <p className="text-center text-sm mt-3">
-                      {proposalData.verified}
+                    <p className="text-black text-xl mt-10 text-justify">
+                      {proposalData.breakage}
                     </p>
-                    <p className="text-center text-base mt-2">
-                      {getStatus(proposalData.status)}
-                    </p>
-                    <p className="text-center text-lg mt-7">Donation Raising</p>
-                    <p className="text-center text-3xl mt-3">
-                      $ {`${proposalData.amount}`}
-                    </p>
-                    <p className="text-center text-lg mt-7">
-                      Voting Starting At:
-                    </p>
-                    <p className="text-center text-xl mt-2">
-                      {timeofproposal()}
-                    </p>
-                    <p className="text-center text-2xl mt-7">Vote</p>
-                    <div className="items-center mt-7 mx-auto flex flex-col justify-center">
-                      <button
-                        className="mx-3 px-10 py-3 bg-white rounded-xl hover:bg-slate-100"
-                        onClick={() => vote(0)}
-                      >
-                        Yes
-                      </button>
-                      <button
-                        className="mx-3 px-10 py-3 bg-white rounded-xl hover:bg-slate-100 mt-5"
-                        onClick={() => vote(1)}
-                      >
-                        No
-                      </button>
+                  </div>
+                  <div className="lg:w-1/5 w-full flex flex-col bg-indigo-100 py-3 rounded-xl mt-10 lg:mt-0 mb-10">
+                    <div className="mx-4">
+                      <p className="text-center text-lg">Created by:</p>
+                      <p className="text-center text-lg mt-1">
+                        {daomemberData.name}
+                      </p>
+                      <p className="text-center text-sm mt-0">
+                        {daomemberData.country}
+                      </p>
+                      <p className="text-center text-sm mt-3">
+                        {proposalData.verified}
+                      </p>
+                      <p className="text-center text-base mt-2">
+                        {getStatus(proposalData.status)}
+                      </p>
+                      <p className="text-center text-lg mt-7">
+                        Donation Raising
+                      </p>
+                      <p className="text-center text-3xl mt-3">
+                        $ {`${proposalData.amount}`}
+                      </p>
+                      <p className="text-center text-lg mt-7">
+                        Voting Starting At:
+                      </p>
+                      <p className="text-center text-xl mt-2">
+                        {timeofproposal()}
+                      </p>
+                      <p className="text-center text-2xl mt-7">Vote</p>
+                      <div className="items-center mt-7 mx-auto flex flex-col justify-center">
+                        <button className="mx-3 px-10 py-3 bg-white rounded-xl hover:bg-slate-100">
+                          Yes
+                        </button>
+                        <button className="mx-3 px-10 py-3 bg-white rounded-xl hover:bg-slate-100 mt-5">
+                          No
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div></div>
-          )}
+            ) : (
+              <div></div>
+            )}
         </div>
+        )}
       </div>
     </div>
   );

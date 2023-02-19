@@ -7,6 +7,7 @@ import {
   FUNDMANAGER_CONTRACT_ADDRESS,
 } from "../../constants/constants";
 import { ethers } from "ethers";
+import { useRouter } from "next/router";
 
 const Pay = () => {
   const [campaignID, setCampaignID] = useState();
@@ -44,6 +45,7 @@ const Pay = () => {
 
   const pay = async () => {
     try {
+      setLoading(true)
       const amount = ethers.utils.parseEther(payable);
       const tx = await FUNDMANAGER_Contract.donateCampaign(
         address,
@@ -53,6 +55,8 @@ const Pay = () => {
       );
 
       await tx.wait();
+      setLoading(false)
+      router.push("/thankyou")
     } catch (error) {
       console.log(error);
     }
@@ -70,12 +74,16 @@ const Pay = () => {
           className="border border-blue-400 xl:py-2 py-1 mt-5 rounded-md px-4"
           onChange={(e) => setPayable(e.target.value)}
         />
-        <button
+       {loading ? <button
+          className="bg-blue-500 px-10 py-3 mt-10 text-white rounded-xl text-xl"
+        >
+          Loading...
+        </button> : <button
           className="bg-blue-500 px-10 py-3 mt-10 text-white rounded-xl text-xl"
           onClick={() => pay()}
         >
-          Pay {payable ? payable : 0} BIT
-        </button>
+        Pay {payable ? payable : 0} BIT 
+        </button>}
       </div>
     </div>
   );
