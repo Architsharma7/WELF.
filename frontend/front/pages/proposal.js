@@ -15,6 +15,20 @@ import {
 } from "../constants/constants";
 import { ethers } from "ethers";
 
+// Proposal Status
+// 0-> ACTIVE
+// 1-> NOTACTIVE
+// 2-> UNDERVOTE
+// 3-> VOTED
+// 4-> COMPLETED
+// 5-> CANCELLED
+
+// DAO Member status
+// 0-> NOTACTIVE
+// 1-> ACTIVE
+// 2-> REMOVED
+// 3-> UNDERWATCH
+
 const Proposal = () => {
   const [page, setPage] = useState(0);
   const formTitles = ["title", "desc", "amount", "image", "preview"];
