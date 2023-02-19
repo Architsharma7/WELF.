@@ -54,7 +54,7 @@ const Explore = () => {
           finalProposals.push(proposal);
         }
       });
-      // console.log(finalProposals);
+      console.log(finalProposals);
       setProposals(finalProposals);
     } catch (error) {
       console.log(error);
@@ -83,7 +83,6 @@ const Explore = () => {
         verified: data.verified,
         status: data.status,
       };
-
       return finalData;
     } catch (error) {
       console.log(error);
@@ -108,7 +107,11 @@ const Explore = () => {
                     <div className="h-[270px]">
                       {/* {data ? <img src={URL.createObjectURL(data.images)} alt=""/> : <p>Image Not Found</p>} */}
                       <img
-                        src="https://ichef.bbci.co.uk/news/976/cpsprodpb/C706/production/_128605905_1d1fa2c80e3674572eb5b6bd6df8b395a897778b553_903_4644_26124644x2612.jpg"
+                        src={
+                          proposal.image
+                            ? proposal.image
+                            : "https://ichef.bbci.co.uk/news/976/cpsprodpb/C706/production/_128605905_1d1fa2c80e3674572eb5b6bd6df8b395a897778b553_903_4644_26124644x2612.jpg"
+                        }
                         alt="earthqauke"
                         className="w-[325px] 3.5xl:w-[450px] 4xl:w-[600px] h-[240px] object-fill"
                       />
