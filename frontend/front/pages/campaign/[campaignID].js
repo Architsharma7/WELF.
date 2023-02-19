@@ -9,6 +9,7 @@ import {
 } from "../../constants/constants";
 import { ethers } from "ethers";
 import { Progress } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react";
 
 const SpecificCampaign = () => {
   const [campaignID, setCampaignID] = useState();
@@ -18,6 +19,7 @@ const SpecificCampaign = () => {
 
   const { address, isConnected } = useAccount();
   const provider = useProvider();
+  const [loading, setLoading] = useState(false);
 
   const FUNDMANAGER_Contract = useContract({
     address: FUNDMANAGER_CONTRACT_ADDRESS,
@@ -33,6 +35,7 @@ const SpecificCampaign = () => {
 
   const fetchCampaign = async (campaignID) => {
     try {
+      setLoading(true)
       /// Then fetch specific Data for the same
       const data = await FUNDMANAGER_Contract.getCampaignData(campaignID);
       // console.log(data);
@@ -63,6 +66,7 @@ const SpecificCampaign = () => {
       };
       // console.log(finalData);
       setCampaignData(finalData);
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -102,6 +106,11 @@ const SpecificCampaign = () => {
   return (
     <div className="w-screen">
       <div className="">
+        {loading ? (
+          <div className="mx-auto flex justify-center mt-20">
+          <Spinner size="xl" />
+          </div>
+        ) : (
         <div className="flex lg:flex-row flex-col">
           {campaignData ? (
             <div className="mx-auto flex lg:flex-row flex-col mt-10">
@@ -195,7 +204,7 @@ const SpecificCampaign = () => {
           ) : (
             <div></div>
           )}
-        </div>
+        </div>)}
       </div>
     </div>
   );
