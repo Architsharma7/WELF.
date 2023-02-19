@@ -7,6 +7,8 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
+import Navbar from "../components/navbar";
+import { useRouter } from "next/router";
 
 const mantleTestnet = {
   id: 5001,
@@ -47,14 +49,19 @@ const wagmiClient = createClient({
   provider,
 });
 
+
 const myFont = localFont({ src: "./CalSans-SemiBold.woff2" });
 
+
 function MyApp({ Component, pageProps }) {
+  const router = useRouter()
+  const showNavbar = (router.pathname == "/" ? false : true)
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         <ChakraProvider>
           <main className={myFont.className}>
+           {showNavbar && <Navbar/>}
             <Component {...pageProps} />
           </main>
         </ChakraProvider>

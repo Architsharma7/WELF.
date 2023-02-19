@@ -20,7 +20,7 @@ const Navbar = () => {
               >
                 Connect Wallet
               </button> */}
-              <ConnectButton chainStatus="none" showBalance={false} accountStatus={{
+              <ConnectButton showBalance={false} accountStatus={{
     smallScreen: 'avatar',
     largeScreen: 'full',
   }}/>

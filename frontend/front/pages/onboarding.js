@@ -10,8 +10,10 @@ import {
   NFT_CONTRACT_ABI,
   NFT_CONTRACT_ADDRESS,
 } from "../constants/constants";
-
+import { useRouter } from "next/router";
+import { useToast } from '@chakra-ui/react'
 import { ethers } from "ethers";
+import { Spinner } from "@chakra-ui/react";
 
 const Onboarding = () => {
   const price = ethers.utils.parseEther("0.05");
@@ -24,6 +26,9 @@ const Onboarding = () => {
   const [location, setLocation] = useState("");
   const options = useMemo(() => countryList().getData(), []);
   const [ipfsUrl, setIpfsUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const toast = useToast();
 
   const { address, isConnected } = useAccount();
   const provider = useProvider();
@@ -43,8 +48,15 @@ const Onboarding = () => {
 
   const uploadData = async () => {
     try {
+      setLoading(true)
       // console.log(location.label, memberData, files);
-      if (!files) console.log("Need to add  a Profile Picture");
+      if (!files) toast({
+        title: 'Please set an Image',
+        description: "",
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
       const pfpcid = await StoreContent(files);
       const pfpURL = `https://ipfs.io/ipfs/${pfpcid}`;
       // setMemberData({ ...memberData, pfp: pfpURL });
@@ -60,7 +72,6 @@ const Onboarding = () => {
       const memberIPFSURL = `https://w3s.link/ipfs/${memberCID}`;
       console.log(memberIPFSURL);
       setIpfsUrl(memberIPFSURL);
-
       mintNFT(memberIPFSURL);
     } catch (err) {
       console.log(err);
@@ -96,10 +107,29 @@ const Onboarding = () => {
       await tx.wait();
       console.log("Record Added to the DAO");
       console.log(tx);
+      setLoading(false)
+      toast({
+        title: 'Added to WELFDAO.',
+        description: "We've created your account for you.",
+        status: 'success',
+        duration: 4000,
+        isClosable: true,
+      })
+      router.push("/dashboard")
     } catch (error) {
       console.log(error.data);
     }
   };
+
+  const fetchLocation = async( ) => {
+    return await fetch(`https://app.zipcodebase.com/api/v1/search?apikey=ee376e80-b02a-11ed-a435-e3faa9ec003f&codes=${memberData.pincode}`)
+    .then(response => response.json())
+    .then(response => console.log(response))
+    .catch(err => console.error(err));}
+  
+    useEffect(() => {
+      fetchLocation()
+    },[uploadData])
 
   return (
     <div className="w-screen">
@@ -168,12 +198,19 @@ const Onboarding = () => {
             </div>
           </div>
         </div>
+        {loading ? <div>
+          <button
+          className="flex justify-center mx-auto px-16 py-3 rounded-lg mt-16  border border-violet-500 bg-violet-500 text-white transition duration-200 text-xl 4xl:text-3xl 4xl:mt-24 mb-10" disabled={true}
+        >
+          <Spinner size="lg" label="Uploading Data to IPFS"/>
+        </button>
+        </div> :
         <button
           className="flex justify-center mx-auto px-16 py-3 rounded-lg mt-16 bg-white border border-violet-500 hover:scale-110 hover:bg-violet-500 hover:text-white transition duration-200 text-xl 4xl:text-3xl 4xl:mt-24 mb-10"
           onClick={() => uploadData()}
         >
           Submit
-        </button>
+        </button>}
       </div>
     </div>
   );
