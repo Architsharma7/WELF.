@@ -87,13 +87,6 @@ const SpecificCampaign = () => {
     }
   };
 
-  const vote = async () => {
-    try {
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     const id = router.query.campaignID;
     if (id) {
