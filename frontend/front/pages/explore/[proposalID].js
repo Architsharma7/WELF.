@@ -193,19 +193,13 @@ const SpecificProposal = () => {
                       {timeofproposal()}
                     </p>
                     <p className="text-center text-2xl mt-7">Vote</p>
-                    <div className="items-center mt-7 mx-auto flex justify-center">
-                      <span>
-                        <IconButton
-                          icon={<AddIcon />}
-                          size="lg"
-                          className="mx-3"
-                        />
-                        <IconButton
-                          icon={<MinusIcon />}
-                          size="lg"
-                          className="mx-3"
-                        />
-                      </span>
+                    <div className="items-center mt-7 mx-auto flex flex-col justify-center">
+                        <button
+                          className="mx-3 px-10 py-3 bg-white rounded-xl hover:bg-slate-100"
+                        >Yes</button>
+                         <button
+                          className="mx-3 px-10 py-3 bg-white rounded-xl hover:bg-slate-100 mt-5"
+                        >No</button>
                     </div>
                   </div>
                 </div>
