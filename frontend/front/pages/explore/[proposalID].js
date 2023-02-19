@@ -194,12 +194,18 @@ const SpecificProposal = () => {
                     </p>
                     <p className="text-center text-2xl mt-7">Vote</p>
                     <div className="items-center mt-7 mx-auto flex flex-col justify-center">
-                        <button
-                          className="mx-3 px-10 py-3 bg-white rounded-xl hover:bg-slate-100"
-                        >Yes</button>
-                         <button
-                          className="mx-3 px-10 py-3 bg-white rounded-xl hover:bg-slate-100 mt-5"
-                        >No</button>
+                      <button
+                        className="mx-3 px-10 py-3 bg-white rounded-xl hover:bg-slate-100"
+                        onClick={() => vote(0)}
+                      >
+                        Yes
+                      </button>
+                      <button
+                        className="mx-3 px-10 py-3 bg-white rounded-xl hover:bg-slate-100 mt-5"
+                        onClick={() => vote(1)}
+                      >
+                        No
+                      </button>
                     </div>
                   </div>
                 </div>
