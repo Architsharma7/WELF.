@@ -110,7 +110,7 @@ const SpecificCampaign = () => {
                   <p className="text-black text-4xl 4xl:text-7xl text-center">
                     {campaignData.title}
                   </p>
-                  <img src={proposalData.image} alt="" className="mt-10" />
+                  <img src={campaignData.image} alt="" className="mt-10" />
                   <video
                     id="my-video"
                     class="video-js"
@@ -178,7 +178,14 @@ const SpecificCampaign = () => {
                     <p className="text-center text-2xl 4xl:text-4xl mt-1 4xl:mt-4">
                       {campaignData.totalDonors}
                     </p>
-                    <button className="bg-white text-blue-500 hover:text-white hover:bg-blue-500 transition duration-200 text-xl 4xl:text-3xl px-10 py-2 rounded-xl items-center flex mx-auto">
+                    <button
+                      className="bg-white text-blue-500 hover:text-white hover:bg-blue-500 transition duration-200 text-xl 4xl:text-3xl px-10 py-2 rounded-xl items-center flex mx-auto"
+                      onClick={() => {
+                        router.push(
+                          `/pay/${campaignData.campaignID}?name=${campaignData.title}`
+                        );
+                      }}
+                    >
                       Donate
                     </button>
                   </div>
