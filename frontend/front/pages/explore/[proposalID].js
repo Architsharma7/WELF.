@@ -27,7 +27,7 @@ const SpecificProposal = () => {
     try {
       /// Then fetch specific Data for the same
       const data = await DAO_Contract.proposals(proposalId);
-      // console.log(data);
+      console.log(parseInt(data.amountReq));
       const proposalData = await (await fetch(data._infoCID)).json();
       // console.log(proposalData);
 
