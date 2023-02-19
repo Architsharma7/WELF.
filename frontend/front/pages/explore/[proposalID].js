@@ -30,6 +30,11 @@ const SpecificProposal = () => {
       // console.log(data);
       const proposalData = await (await fetch(data._infoCID)).json();
       // console.log(proposalData);
+
+      // User Data
+      const userData = await getUserData(data.creator);
+      // console.log(userData);
+
       const finalData = {
         proposalID: proposalId,
         title: proposalData.title,
@@ -41,12 +46,34 @@ const SpecificProposal = () => {
         duration: parseInt(data.duration),
         startTime: parseInt(data.startTime),
         fundContract: data.fundContract,
-        creator: data.creator,
+        creatorAddress: data.creator,
+        creatorData: userData,
         verified: data.verified,
         status: data.status,
       };
       // console.log(finalData);
       setProposalData(finalData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getUserData = async (creatorAddress) => {
+    try {
+      const data = await DAO_Contract.getMemberData(creatorAddress);
+      // console.log(data);
+      const ipfsData = await (await fetch(data.profileCID)).json();
+      // console.log(ipfsData);
+      const memberData = {
+        name: ipfsData.name,
+        bio: ipfsData.bio,
+        pfp: ipfsData.pfp,
+        country: ipfsData.country,
+        tokenID: parseInt(data.NFTTokenID),
+        verified: data.verified,
+        status: data.status,
+      };
+      return memberData;
     } catch (error) {
       console.log(error);
     }
