@@ -52,10 +52,11 @@ const Donatordashboard = () => {
 
   return (
     <div className="w-screen">
+      {isConnected ? (
       <div className=" xl:w-/5 w-screen flex mx-auto justify-center">
         {userData && (
           <div className="flex flex-col justify-center mx-auto mt-10 text-center">
-            <p className="xl:text-5xl text-2xl text-black">User Name</p>
+            <p className="xl:text-5xl text-2xl text-black">{userData.profileCID}</p>
             <span className="">
               {" "}
               <p className="xl:text-2xl text-base text-black mt-4">{address}</p>
@@ -72,10 +73,10 @@ const Donatordashboard = () => {
                   <TabPanel>
                     {userData.totalTxs ? (
                       userData.totalTxs.map((tx) => {
-                        return <p>tx</p>;
+                        return <p>{tx}</p>;
                       })
                     ) : (
-                      <p>"No txs found"</p>
+                      <p className="text-xl text-black">"No txs found"</p>
                     )}
                   </TabPanel>
                   <TabPanel>
@@ -86,7 +87,9 @@ const Donatordashboard = () => {
             </div>
           </div>
         )}
-      </div>
+      </div> ) : (<div>
+        <p className="text-5xl text-center mt-20">Please Connect to wallet</p>
+      </div>) }
     </div>
   );
 };
