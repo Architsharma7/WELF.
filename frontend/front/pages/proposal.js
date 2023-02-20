@@ -3,7 +3,7 @@ import Proposalamount from "../components/proposalamount";
 import Proposaldesc from "../components/proposaldesc";
 import Proposalimage from "../components/proposalimage";
 import Proposalpreview from "../components/proposalpreview";
-import ProposalTitle from "../components/ProposalTitle";
+import ProposalTitle from "../components/proposaltitle";
 import styles from "../styles/progressbar.module.css";
 import { StoreContent, storeProposal } from "../functions/ipfsstorage";
 import { useAccount, useContract, useProvider, useSigner } from "wagmi";

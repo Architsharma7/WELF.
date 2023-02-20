@@ -1,6 +1,9 @@
 import React from "react";
 import Image from "next/image";
 import wel from "../public/welfare.png";
+import decen from "../public/decen.png";
+import dao from "../public/dao.png";
+import ipfs from "../public/ipfs.svg";
 import { BiDonateHeart } from "react-icons/bi";
 import { BsPeopleFill } from "react-icons/bs";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
@@ -46,7 +49,7 @@ const Mainpage = () => {
             <div className="mt-10 4xl:mt-20">
               <div className="grid lg:grid-cols-3 lg:grid-rows-1 grid-rows-3 gap-x-10 gap-y-10">
                 <div className="w-full py-4 4xl:py-16 px-10 border bg-neutral-100 rounded-xl flex flex-col items-center border-indigo-500">
-                  <Image src={wel} height={400} width={400} alt="hello" />
+                  <Image src={decen} height={400} width={400} alt="hello" />
                   <p className="xl:text-xl 4xl:text-4xl lg:text-lg">
                     Decentralisation provides more security and transparency of
                     the funds you donate. Ensure that every penny you spent,
@@ -54,7 +57,7 @@ const Mainpage = () => {
                   </p>
                 </div>
                 <div className="w-full py-4 4xl:py-16 px-10 border  bg-neutral-100 rounded-xl flex flex-col items-center border-indigo-500">
-                  <Image src={wel} height={400} width={400} alt="hello" />
+                  <Image src={dao} height={400} width={400} alt="hello" />
                   <p className="xl:text-xl 4xl:text-4xl lg:text-lg">
                     DAO structure of our platform ensures that the people
                     helping out others don't go empty handed, we incentivise
@@ -62,7 +65,7 @@ const Mainpage = () => {
                   </p>
                 </div>
                 <div className="w-full py-4 4xl:py-16 px-10 border bg-neutral-100 rounded-xl flex flex-col items-center border-indigo-500">
-                  <Image src={wel} height={400} width={400} alt="hello" />
+                  <Image src={ipfs} height={400} width={400} alt="hello" />
                   <p className="xl:text-xl 4xl:text-4xl lg:text-lg">
                     We provide hassle free donations with Mantle Chain and all the data stored on IPFS which makes the data more secure.
                   </p>
@@ -109,12 +112,12 @@ const Mainpage = () => {
                 Featured Proposals
               </p>
               <div className="grid lg:grid-cols-3 lg:grid-rows-1 grid-flow-row mt-10 gap-x-10 gap-y-10 mb-20">
-                <Link href="/">
+                <Link href="/campaign/0">
                   <div className="flex flex-col items-center bg-slate-100 shadow-xl border-black border rounded-xl px-4 py-3 h-[450px]">
                     <div className="h-[270px]">
                       {/* {data ? <img src={URL.createObjectURL(data.images)} alt=""/> : <p>Image Not Found</p>} */}
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbrIBxJ3gE5QChBu2E0BWrI2aNCbMSx1775g&usqp=CAU"
+                        src="https://w3s.link/ipfs/bafkreielrn724islibx37nmtwjfymjq42ytv2sn4nvdazhik5x44fwlzbq"
                         alt="earthqauke"
                         className="w-[325px] 3.5xl:w-[450px] 4xl:w-[600px] h-[240px] object-fill"
                       />
@@ -126,19 +129,17 @@ const Mainpage = () => {
                     </div>
                     <div className="text-center">
                       <p className="text-ellipsis lg:w-[300px] 3.5xl:w-[450px] 4xl:w-[600px] line-clamp-2 text-sm">
-                        by who
+                        by Dhruv Agarwal
                       </p>
                     </div>
                     <div className="text-center mt-2">
                       <p className="text-ellipsis lg:w-[300px] 3.5xl:w-[450px] 4xl:w-[600px] line-clamp-2">
-                        Rescue workers in Turkey have pulled at least three
-                        people from the rubble, over 11 days after they were
-                        trapped when an earthquake hit the country.
+                      Turkey-Syria earthquake live updates: Magnitude 5.2 quake strikes central Turkey, death toll exceeds 46,000. More than 45,000 people have been killed in the earthquake that struck Turkey and Syria. The toll is expected to soar with some 264,000 apartments in Turkey destroyed and many still missing in the country’s worst modern disaster. While many international rescue teams have left the vast quake zone, domestic teams continued to search through flattened buildings on Saturday hoping to find more survivors who defied the odds. Experts say most rescues occur in the 24 hours following an earthquake. The count is expected to grow and more people are going to go homless. This is the time when the people needs our most help , and the more support and rescue we could reach out to people , the better it would be . The people are in dire need of daily essentials and shelters which could be provided from them.
                       </p>
                     </div>
                     <div className="text-center mt-2">
-                      <p>Amount raised</p>
-                      <p className="text-ellipsis overflow-hidden">$ 250000</p>
+                      <p>Amount raising</p>
+                      <p className="text-ellipsis overflow-hidden">$ 50000</p>
                     </div>
                   </div>
                 </Link>

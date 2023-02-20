@@ -189,7 +189,7 @@ const SpecificCampaign = () => {
                         {campaignData.totalDonors}
                       </p>
                       <button
-                        className="bg-white text-blue-500 hover:text-white hover:bg-blue-500 transition duration-200 text-xl 4xl:text-3xl px-10 py-2 rounded-xl items-center flex mx-auto"
+                        className="bg-white text-blue-500 hover:text-white hover:bg-blue-500 transition duration-200 text-xl 4xl:text-3xl px-10 py-2 rounded-xl items-center flex mx-auto mt-10"
                         onClick={() => {
                           router.push(
                             `/pay/${campaignData.campaignID}?name=${campaignData.title}`
