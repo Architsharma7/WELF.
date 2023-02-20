@@ -28,9 +28,9 @@ Welf will improve the experience even more, add more transparency with proper tr
 
 ### 🔩 Project Structure
 
-- [Web Frontend](https://github.com/Architsharma7/PublicHelpDAO/frontend/front)
+- [Web Frontend](https://github.com/Architsharma7WELF/frontend/front)
 
-- [Contract](https://github.com/Architsharma7/PublicHelpDAO/backend/contracts)
+- [Contract](https://github.com/Architsharma7/WELF/backend/contracts)
 
 🚫 License
 
