@@ -1,20 +1,58 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
 const hre = require("hardhat");
 
 async function main() {
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  const token = await hre.ethers.getContractFactory("WelfDAOToken");
+  const TOKEN = await token.deploy();
 
-  await lock.deployed();
+  await TOKEN.deployed();
 
-  console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+  console.log(`Welf DAO Token deployed to ${TOKEN.address}`);
+
+  const fund = await hre.ethers.getContractFactory("WelfFunds");
+  const FUND = await fund.deploy();
+
+  await FUND.deployed();
+
+  console.log(`Welf DAO Funds deployed to ${FUND.address}`);
+
+  const nft = await hre.ethers.getContractFactory("WelfDAONFT");
+  const NFT = await nft.deploy("", FUND.address);
+
+  await NFT.deployed();
+
+  console.log(`Welf DAO NFT deployed to ${NFT.address}`);
+
+  const registry = await hre.ethers.getContractFactory("DonationRegistery");
+  const REGISTRY = await registry.deploy();
+
+  await REGISTRY.deployed();
+
+  console.log(`Welf Donation Registery deployed to ${REGISTRY.address}`);
+
+  const manager = await hre.ethers.getContractFactory("PropFundManager");
+  const MANAGER = await manager.deploy(
+    "0xe22eCBbA8fB9C0124eeCb6AfE0bf6A487424989f",
+    REGISTRY.address,
+    TOKEN.address
   );
+
+  await MANAGER.deployed();
+
+  console.log(`Welf Fund Manager deployed to ${MANAGER.address}`);
+
+  const dao = await hre.ethers.getContractFactory("WelfDAO");
+  const DAO = await dao.deploy(
+    NFT.address,
+    TOKEN.address,
+    "0xe22eCBbA8fB9C0124eeCb6AfE0bf6A487424989f",
+    MANAGER.address
+  );
+
+  await DAO.deployed();
+
+  console.log(`Welf Fund Manager deployed to ${DAO.address}`);
+
+  /// Tasks
 }
 
 // We recommend this pattern to be able to use async/await everywhere
