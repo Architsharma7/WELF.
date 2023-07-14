@@ -5,14 +5,15 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "./WelfFund.sol";
 
-interface WelfFunds {
-    // to stake the amount to join the DAO
-    function intiateStake(address _from, uint256 amount) external payable;
+// interface WelfFunds {
+//     // to stake the amount to join the DAO
+//     function intiateStake(address _from, uint256 amount) external payable;
 
-    // function to return the joining fees
-    function returnStake(address _userAddress) external returns (bool success);
-}
+//     // function to return the joining fees
+//     function returnStake(address _userAddress) external returns (bool success);
+// }
 
 // NFT Contract to allot the Memberships
 // Manager can control the User Memberships
@@ -35,9 +36,10 @@ contract WelfDAONFT is ERC721, Ownable {
     event Attest(address indexed to, uint256 indexed tokenId);
     event Revoke(address indexed to, uint256 indexed tokenId);
 
-    constructor(string memory _base, address welfFunds)
-        ERC721("Welf DAO Member", "WelfMember")
-    {
+    constructor(
+        string memory _base,
+        address payable welfFunds
+    ) ERC721("Welf DAO Member", "WelfMember") {
         baseURI = _base;
         manager = msg.sender;
 
@@ -62,13 +64,9 @@ contract WelfDAONFT is ERC721, Ownable {
 
     /// for every token ID we have the same metadata as the DAO NFT is same for everybody
     ///  we can create dynmaic on Chain NFT data too which is dynamic for users input
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        virtual
-        override
-        returns (string memory)
-    {
+    function tokenURI(
+        uint256 tokenId
+    ) public view virtual override returns (string memory) {
         return baseURI;
     }
 
@@ -139,12 +137,9 @@ contract WelfDAONFT is ERC721, Ownable {
         }
     }
 
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override
-        returns (bool)
-    {
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view override returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 }

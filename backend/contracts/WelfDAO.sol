@@ -2,6 +2,7 @@
 pragma solidity ^0.8.14;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./PropFundManager.sol";
 
 /// Manage the Members Access and thier Profile Status
 /// Manage All the proposals they create and vote on those
@@ -14,20 +15,20 @@ interface NFTContract {
     function revoke(uint256 tokenId) external;
 }
 
-interface campaignManager {
-    function createFundContract(
-        uint256 campaignID,
-        uint256 proposalID,
-        string memory _infoCID,
-        uint256 amount,
-        uint256 duration,
-        address creatorAddress
-    ) external returns (uint256 id);
-}
+// interface PropFundManager {
+//     function createFundContract(
+//         uint256 campaignID,
+//         uint256 proposalID,
+//         string memory _infoCID,
+//         uint256 amount,
+//         uint256 duration,
+//         address creatorAddress
+//     ) external returns (uint256 id);
+// }
 
-interface TokenContract {
-    function mint(address _to, uint256 _amount) external;
-}
+// interface TokenContract {
+//     function mint(address _to, uint256 _amount) external;
+// }
 
 contract WelfDAO is Ownable {
     /// Proposal details
@@ -89,7 +90,7 @@ contract WelfDAO is Ownable {
     NFTContract public _nftContract;
 
     address public fundManagerAddress;
-    campaignManager public _managerContract;
+    PropFundManager public _managerContract;
 
     address public tokenContractAddress;
     TokenContract public _tokenContract;
@@ -141,7 +142,7 @@ contract WelfDAO is Ownable {
         fundManagerAddress = _fundManager;
         tokenContractAddress = _tokenAddress;
         _nftContract = NFTContract(nftContractAddress);
-        _managerContract = campaignManager(fundManagerAddress);
+        _managerContract = PropFundManager(fundManagerAddress);
         _tokenContract = TokenContract(tokenContractAddress);
     }
 
@@ -227,19 +228,15 @@ contract WelfDAO is Ownable {
      *  ########  MEMBER GETTER VARAIBLES   #########
      */
 
-    function getMemberData(address user)
-        public
-        view
-        returns (DAOMember memory _member)
-    {
+    function getMemberData(
+        address user
+    ) public view returns (DAOMember memory _member) {
         _member = daoMembers[user];
     }
 
-    function getMemberStatus(address user)
-        public
-        view
-        returns (memberStatus _status)
-    {
+    function getMemberStatus(
+        address user
+    ) public view returns (memberStatus _status) {
         _status = daoMembers[user].status;
     }
 
@@ -302,11 +299,9 @@ contract WelfDAO is Ownable {
 
     /// Finalize the Voting and Create the Fund Contract if approved , with marked as verified
     /// Voting Can be ended only by the manager , without any time Limit for now
-    function completeVoting(uint256 _proposalID)
-        public
-        onlyManager
-        returns (uint256 campaignID)
-    {
+    function completeVoting(
+        uint256 _proposalID
+    ) public onlyManager returns (uint256 campaignID) {
         campaignProposal memory _campaign = proposals[_proposalID];
         require(!_campaign.verified, "ALREADY VERIFIED");
         // require(

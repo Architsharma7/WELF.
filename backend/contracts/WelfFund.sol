@@ -9,10 +9,10 @@ interface IERC20 {
 
     function transfer(address to, uint256 amount) external returns (bool);
 
-    function allowance(address owner, address spender)
-        external
-        view
-        returns (uint256);
+    function allowance(
+        address owner,
+        address spender
+    ) external view returns (uint256);
 
     function approve(address spender, uint256 amount) external returns (bool);
 
@@ -83,11 +83,10 @@ contract WelfFunds is Ownable {
     }
 
     /// @dev withdraw eth to a particular address in case of grants
-    function withdrawEthTo(address payable _to, uint256 _amount)
-        public
-        onlyManager
-        returns (bool)
-    {
+    function withdrawEthTo(
+        address payable _to,
+        uint256 _amount
+    ) public onlyManager returns (bool) {
         (bool success, ) = _to.call{value: _amount}("");
         emit withdrawal(_to, _amount);
         return success;
@@ -99,20 +98,12 @@ contract WelfFunds is Ownable {
     }
 
     /// @dev Need to provide the allowance first
-    function donateTokens(
-        address token,
-        address from,
-        uint256 amount
-    ) public {
+    function donateTokens(address token, address from, uint256 amount) public {
         IERC20(token).transferFrom(from, address(this), amount);
         emit receivedToken(token, msg.sender, amount);
     }
 
-    function withdrawTokens(
-        address token,
-        address to,
-        uint256 amount
-    ) public {
+    function withdrawTokens(address token, address to, uint256 amount) public {
         IERC20(token).transfer(to, amount);
         emit withdrawalToken(token, to, amount);
     }
@@ -122,10 +113,10 @@ contract WelfFunds is Ownable {
      */
 
     // function to add the staking
-    function intiateStake(address _from, uint256 amount)
-        external
-        onlyNFTContract
-    {
+    function intiateStake(
+        address _from,
+        uint256 amount
+    ) external onlyNFTContract {
         // require(msg.value > 0, "NO ETHER SENT ");
         stakers[_from] = amount;
 
@@ -133,11 +124,9 @@ contract WelfFunds is Ownable {
     }
 
     // function to return the joining fees
-    function returnStake(address _userAddress)
-        external
-        onlyNFTContract
-        returns (bool success)
-    {
+    function returnStake(
+        address _userAddress
+    ) external onlyNFTContract returns (bool success) {
         uint256 amount = stakers[_userAddress];
         require(amount > 0, "NO STAKED AMOUNT FOUND");
 

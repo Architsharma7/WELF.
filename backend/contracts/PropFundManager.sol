@@ -2,6 +2,7 @@
 pragma solidity ^0.8.14;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./PropFund.sol";
+import "./DonationRegistery.sol";
 
 /// Allowed only after the req is approved by the DAO
 /// This the entry point contract to manage all the new FUND deployements
@@ -10,13 +11,13 @@ import "./PropFund.sol";
 /// Also the single point for withdrawl of any sort from the contracts
 /// Set withdraw rules too
 
-interface DonationRegistery {
-    function addDonorRecord(
-        address _user,
-        uint256 campaignID,
-        uint256 amountDonated
-    ) external;
-}
+// interface DonationRegistery {
+//     function addDonorRecord(
+//         address _user,
+//         uint256 campaignID,
+//         uint256 amountDonated
+//     ) external;
+// }
 
 interface TokenContract {
     function mint(address _to, uint256 _amount) external;
@@ -62,10 +63,10 @@ contract PropFundManager is Ownable {
     mapping(address => bool) public approved;
 
     address public registeryAddress;
-    DonationRegistery public _donationRegistery ;
+    DonationRegistery public _donationRegistery;
 
     address public tokenContractAddress;
-    TokenContract public _tokenContract ;
+    TokenContract public _tokenContract;
 
     constructor(
         address _manager,
@@ -75,8 +76,7 @@ contract PropFundManager is Ownable {
         manager = _manager;
         registeryAddress = _regsiteryAddress;
         tokenContractAddress = _tokenAddress;
-        _donationRegistery =
-        DonationRegistery(registeryAddress);
+        _donationRegistery = DonationRegistery(registeryAddress);
         _tokenContract = TokenContract(tokenContractAddress);
         approved[msg.sender] = true;
         approved[manager] = true;
@@ -120,7 +120,7 @@ contract PropFundManager is Ownable {
     ) public onlyApproved returns (uint256 id) {
         /// deploy the fund Contract
 
-        PropFund  _fundContract = new PropFund(manager);
+        PropFund _fundContract = new PropFund(manager);
 
         /// add the details to the data here
         require(campaignID == totalCampaigns, "INVALID CAMPAIGN ID");
@@ -184,11 +184,9 @@ contract PropFundManager is Ownable {
      *  ########  PROP FUND GETTER   #########
      */
 
-    function getCampaignData(uint256 campaignId)
-        public
-        view
-        returns (Campaign memory _campaign)
-    {
+    function getCampaignData(
+        uint256 campaignId
+    ) public view returns (Campaign memory _campaign) {
         _campaign = fundCampaigns[campaignId];
     }
 
@@ -229,7 +227,7 @@ contract PropFundManager is Ownable {
 
         ///mint the depost Tokens
         // for 100 ETH donation , we provide 10 tokens as incentive
-        _tokenContract.mint(msg.sender,( amount * 1 / 10 ));
+        _tokenContract.mint(msg.sender, ((amount * 1) / 10));
     }
 
     /*
@@ -255,22 +253,24 @@ contract PropFundManager is Ownable {
         );
 
         require(
-            amount <= (_campaign.totalFunds * 4 / 10),
+            amount <= ((_campaign.totalFunds * 4) / 10),
             "Amount Can only be withdrawn until 40% "
         );
 
         /// Initiate the withdrawl
         address fundContractAddress = _campaign.fundContract;
-        PropFund(payable(fundContractAddress)).withdrawEthTo(payable(withdrawAddress), amount);
+        PropFund(payable(fundContractAddress)).withdrawEthTo(
+            payable(withdrawAddress),
+            amount
+        );
     }
 
     function addProof(uint256 campaignID, string memory proofCID) public {
         Campaign memory _campaign = fundCampaigns[campaignID];
 
         require(_campaign.Creator == msg.sender, "NOT AUTHORISED TO WITHDRAW");
-        
 
-        /// Proof addition Complete 
+        /// Proof addition Complete
         withdrawProofs[campaignID].push(proofCID);
         /// Now check needs to be implemented from The DOA Manager and the member itself
     }

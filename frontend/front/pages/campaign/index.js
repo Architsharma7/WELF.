@@ -33,11 +33,11 @@ const Campaign = () => {
   const [data, setData] = useState();
 
   const fetchData = async () => {
-    return await fetch(
-      "https://bafkreic5sd2ft3z5ianuf5iqz2rt4d27tmorlau3xaajup6c3ria7ykg2q.ipfs.w3s.link/"
-    )
-      .then((response) => response.json())
-      .then((value) => setData(value));
+    // return await fetch(
+    //   "https://bafkreic5sd2ft3z5ianuf5iqz2rt4d27tmorlau3xaajup6c3ria7ykg2q.ipfs.w3s.link/"
+    // )
+    //   .then((response) => response.json())
+    //   .then((value) => setData(value));
   };
 
   useEffect(() => {

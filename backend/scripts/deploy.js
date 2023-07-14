@@ -1,4 +1,5 @@
 const hre = require("hardhat");
+const { main: execTasks } = require("./tasks");
 
 async function main() {
   const token = await hre.ethers.getContractFactory("WelfDAOToken");
@@ -50,9 +51,31 @@ async function main() {
 
   await DAO.deployed();
 
-  console.log(`Welf Fund Manager deployed to ${DAO.address}`);
+  console.log(`Welf DAO deployed to ${DAO.address}`);
 
   /// Tasks
+  // await execTasks(TOKEN, MANAGER, DAO, FUND, NFT, REGISTRY);
+
+  // approve fund manager and DAO
+  TOKEN.approve(MANAGER.address, true);
+  TOKEN.approve(DAO.address, true);
+
+  console.log("Token approved Manager and DAO");
+
+  // set NFT contract add
+  FUND.setNFTContractAddress(NFT.address);
+
+  console.log("NFT Contract set in Funds");
+
+  // approve fund manager in Donation registery
+  REGISTRY.approve(MANAGER.address, true);
+
+  console.log("Approving the registery ");
+
+  // approve DAO in fund manager
+  MANAGER.approve(DAO.address, true);
+
+  console.log("DAO approved in manager");
 }
 
 // We recommend this pattern to be able to use async/await everywhere

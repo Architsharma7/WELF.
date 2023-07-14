@@ -1,15 +1,15 @@
 export const TOKEN_CONTRACT_ADDRESS =
-  "0xa950B39bAA4f17065035BA4faFeaB513cf9106c4";
+  "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 export const NFT_CONTRACT_ADDRESS =
-  "0x4d8c79532A90Cd75307820cB9ef066a9A7305460";
+  "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 export const REGISTERY_CONTRACT_ADDRESS =
-  "0xfDA0991fB004C2AA5B522317755B1D2F8384054B";
+  "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
 export const DAO_CONTRACT_ADDRESS =
-  "0x42A5e7052E3AbfEb57Da66a64a95408A5C6a9b98";
+  "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707";
 export const DAOFUND_CONTRACT_ADDRESS =
-  "0x056537e22cAC19Eb010bD69466a973112B88B5ba";
+  "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 export const FUNDMANAGER_CONTRACT_ADDRESS =
-  "0x330a5495F9912205C3117fE7Cd195f4468199eE6";
+  "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
 
 export const TOKEN_CONTRACT_ABI = [
   {
@@ -448,7 +448,7 @@ export const NFT_CONTRACT_ABI = [
         type: "string",
       },
       {
-        internalType: "address",
+        internalType: "address payable",
         name: "welfFunds",
         type: "address",
       },
@@ -1277,7 +1277,7 @@ export const DAO_CONTRACT_ABI = [
     name: "_managerContract",
     outputs: [
       {
-        internalType: "contract campaignManager",
+        internalType: "contract PropFundManager",
         name: "",
         type: "address",
       },
