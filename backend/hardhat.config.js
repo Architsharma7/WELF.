@@ -1,5 +1,6 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config({ path: ".env" });
+require("@nomicfoundation/hardhat-ethers");
 
 const APOTHEM_RPC = "https://erpc.apothem.network";
 
